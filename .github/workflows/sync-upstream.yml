@@ -1,0 +1,37 @@
+name: Sync Upstream and Customize
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # 每6小时执行一次
+  workflow_dispatch:      # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Add upstream and fetch
+        run: |
+          git remote add upstream https://github.com/Aethersailor/Custom_Clash_Rules.git
+          git fetch upstream
+          git merge upstream/main --allow-unrelated-histories --no-edit || true
+
+      - name: Run customization script
+        run: |
+          bash .github/scripts/customize.sh
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Auto sync and customize" || echo "No changes to commit"
+          git push origin main
+
