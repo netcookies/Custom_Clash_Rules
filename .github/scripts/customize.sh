@@ -12,7 +12,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     RULE_LINE='ruleset=🌸 红杏影视,https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
 
     # 如果未包含，则插入到指定 ruleset 行下方
-    grep -Fq "$RULE_LINE" "$file" || sed -i "/^ruleset=🚀 手动选择,\[\]GEOSITE,gfw$/a $RULE_LINE" "$file"
+    grep -Fq "$RULE_LINE" "$file" || sed -i "/^ruleset=🚀 手动选择.*$/a $RULE_LINE" "$file"
 
     # 第二条要插入的 custom_proxy_group 行（注意反引号需转义）
     GROUP_LINE='custom_proxy_group=🌸 红杏影视`url-test`(红杏|红杏云|hongxingdl|hongxing|hongxingyun)`https://cp.cloudflare.com/generate_204`300,,50'

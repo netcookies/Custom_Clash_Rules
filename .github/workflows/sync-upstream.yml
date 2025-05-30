@@ -2,8 +2,8 @@ name: Sync Upstream and Customize
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # 每6小时执行一次
-  workflow_dispatch:      # 允许手动触发
+    - cron: '0 */6 * * *'  # 每 6 小时执行一次
+  workflow_dispatch:       # 允许手动触发
 
 jobs:
   sync:
@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0  # 需要完整历史以进行合并
 
       - name: Set up Git
         run: |
@@ -24,7 +25,21 @@ jobs:
         run: |
           git remote add upstream https://github.com/Aethersailor/Custom_Clash_Rules.git
           git fetch upstream
-          git merge upstream/main --allow-unrelated-histories --no-edit || true
+
+      - name: Merge upstream/main with conflict auto-resolution
+        run: |
+          set +e
+          git merge upstream/main --allow-unrelated-histories
+          status=$?
+          if [ $status -ne 0 ]; then
+            echo "⚠️ 冲突发生，自动使用 upstream 版本解决"
+            for file in $(git diff --name-only --diff-filter=U); do
+              git checkout --theirs -- "$file"
+              git add "$file"
+            done
+            git commit -m "Auto-resolved merge conflicts using upstream version"
+          fi
+          set -e
 
       - name: Run customization script
         run: |
