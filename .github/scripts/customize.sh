@@ -20,14 +20,15 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     if grep -q '^custom_proxy_group=🎥 Emby`select`' "$file"; then
         ORIGINAL_LINE=$(grep '^custom_proxy_group=🎥 Emby`select`' "$file")
 
-        # 删除已有 []🌸 红杏影视`（无论在哪）
+        [ -z "$ORIGINAL_LINE" ] && continue
+
         CLEANED_LINE=$(echo "$ORIGINAL_LINE" | sed 's/\[\]🌸 红杏影视`//g')
+        UPDATED_LINE=$(echo "$CLEANED_LINE" | sed 's|^custom_proxy_group=🎥 Emby`select`|custom_proxy_group=🎥 Emby`select`[]🌸 红杏影视`|')
 
-        # 重新插入到 `select` 后
-        UPDATED_LINE=$(echo "$CLEANED_LINE" | sed 's/^custom_proxy_group=🎥 Emby`select`/custom_proxy_group=🎥 Emby`select`[]🌸 红杏影视`/')
+        ESC_ORIGINAL=$(printf '%s\n' "$ORIGINAL_LINE" | sed 's/[.[\*^$/]/\\&/g')
+        ESC_UPDATED=$(printf '%s\n' "$UPDATED_LINE" | sed 's/[&/\]/\\&/g')
 
-        # 使用替换行更新文件
-        sed -i "s|^$ORIGINAL_LINE\$|$UPDATED_LINE|" "$file"
+        sed -i "s|$ESC_ORIGINAL|$ESC_UPDATED|" "$file"
 
         echo "✨ 🎥 Emby 分组更新完成：🌸 红杏影视 已在首位"
     fi
