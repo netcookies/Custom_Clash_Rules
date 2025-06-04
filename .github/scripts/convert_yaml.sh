@@ -54,7 +54,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    include-all: true" >> "$yaml_file"
                 # 提取 () 中的正则内容
                 raw_filter=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`\(\)')
-                if [[ "$raw_filter" =~ ^([^\(\)\|]+(\|[^\(\)\|]+)+)$ ]]; then
+                if [[ "$raw_filter" =~ ^[^|]+(\|[^|]+)+$ ]]; then
                     # 多个用 `|` 分隔的关键词，且不含括号，判定为普通 filter
                     echo "    filter: (?i)$raw_filter" >> "$yaml_file"
                 else
