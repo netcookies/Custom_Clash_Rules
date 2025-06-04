@@ -46,14 +46,21 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     echo "      - $proxy" >> "$yaml_file"
                 done
             elif [[ "$type" == "url-test" ]]; then
-                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`\(\)' | sed 's/^/(?i)/')
+                # 提取 filter 正则部分（带括号）
+                raw_filter=$(echo "$line" | grep -oP '\`\(.*\)\`')
+                filter=$(echo "$raw_filter" | tr -d '\`\(\)' | sed 's/^/(?i)/')
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
                 tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')        
                 echo "  - name: $name" >> "$yaml_file"
                 echo "    type: url-test" >> "$yaml_file"
-                echo "    include-all: true" >> "$yaml_file"             
-                [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"               
+                echo "    include-all: true" >> "$yaml_file"
+                if [[ "$name" == "🌐 其他地区" ]]; then
+                    exclude_filter=$(echo "$raw_filter" | sed -E 's/^\`\(\^\(\?!\.\*\((.*)\)\)\.\*\)\`$/\1/' | sed 's/^/(?i)/')
+                    [[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
+                else
+                    [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
+                fi
                 echo "    url: $url" >> "$yaml_file"
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
                 echo "    tolerance: ${tolerance:-50}" >> "$yaml_file"
