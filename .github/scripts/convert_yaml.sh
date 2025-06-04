@@ -29,7 +29,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     while IFS= read -r line; do
         # 处理 custom_proxy_group
         if [[ "$line" =~ ^custom_proxy_group= ]]; then
-            name=$(echo "$line" | cut -d'=' -f2 | cut -d'\`' -f1)
+            name=$(echo "$line" | cut -d'=' -f2 | cut -d'`' -f1)
             type=$(echo "$line" | grep -oP '\`(select|url-test)\`' | tr -d '\`')
 
             if [[ "$type" == "select" ]]; then
