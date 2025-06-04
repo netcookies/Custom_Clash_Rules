@@ -1,122 +1,98 @@
 #!/bin/bash
-
 set -e
 
 CFG_DIR="./cfg"
-YAML_DIR="./yaml"
-BASE_TEMPLATE="./base/template.yaml"
+OUT_DIR="./yaml"
+TEMPLATE="./base/template.yaml"
+RULESET_DIR="./ruleset"
 
-mkdir -p "$YAML_DIR"
+mkdir -p "$OUT_DIR"
+mkdir -p "$RULESET_DIR"
 
-echo "📁 开始转换 ini ➜ 完整 YAML"
+echo "🔧 开始转换 ini -> yaml..."
 
-find "$CFG_DIR" -type f -name "*.ini" | while read -r ini; do
-    base=$(basename "$ini" .ini)
-    yaml="$YAML_DIR/$base.yaml"
-    echo "🔧 处理 $ini → $yaml"
+find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
+    echo "📝 处理文件: $file"
+    base_name=$(basename "$file" .ini)
+    yaml_file="$OUT_DIR/$base_name.yaml"
 
-    # 先写入 base/template.yaml 的内容
-    cat "$BASE_TEMPLATE" > "$yaml"
+    echo "---" > "$yaml_file"
 
-    # 在末尾追加 proxy-groups:
-    echo -e "\nproxy-groups:" >> "$yaml"
+    # 合并模板
+    if [ -f "$TEMPLATE" ]; then
+        cat "$TEMPLATE" >> "$yaml_file"
+        echo "" >> "$yaml_file"
+    fi
 
-    # 处理 custom_proxy_group 行
-    grep '^custom_proxy_group=' "$ini" | while read -r line; do
-        IFS='=' read -r _ content <<< "$line"
-        # 解析格式：名称`类型`[代理组]`url`interval,,timeout
-        IFS='`' read -r name type rest <<< "$content"
+    echo "proxy-groups:" >> "$yaml_file"
 
-        # 提取 proxies（用 [] 包裹的部分），用 | 分隔
-        proxies=""
-        if [[ "$rest" =~ \[.*\] ]]; then
-            proxies=$(echo "$rest" | grep -oP '\[.*?\]' | tr -d '[]' | tr '|' ',' | sed 's/, */, /g')
-        fi
+    grep '^custom_proxy_group=' "$file" | while read -r line; do
+        name=$(echo "$line" | cut -d'=' -f2 | cut -d'`' -f1)
+        type=$(echo "$line" | grep -o '`[^`]*`' | sed -n 1p | tr -d '`')
 
-        # 特殊处理 proxies，逗号分隔转yaml数组格式
-        IFS=',' read -ra proxy_arr <<< "$proxies"
+        # select 类型
+        if [[ "$type" == "select" ]]; then
+            proxies=$(echo "$line" | sed 's/.*select`//' | grep -o '\[\][^`]*`' | sed 's/\[\]\(.*\)`/\1/' | awk '{ORS=", "} {print}' | sed 's/, $//')
+            echo "  - name: $name" >> "$yaml_file"
+            echo "    type: select" >> "$yaml_file"
+            echo "    proxies: [${proxies}]" >> "$yaml_file"
 
-        echo "  - name: \"$name\"" >> "$yaml"
-        echo "    type: $type" >> "$yaml"
+        # url-test 类型
+        elif [[ "$type" == "url-test" ]]; then
+            content=$(echo "$line" | cut -d'`' -f3-)
+            filter=$(echo "$content" | grep -o '^(.*)' || true)
+            url=$(echo "$content" | grep -o 'https[^`]*')
+            interval=$(echo "$content" | sed 's/.*`//;s/,,.*//')
+            tolerance=$(echo "$content" | sed 's/.*,,//')
 
-        if [ ${#proxy_arr[@]} -gt 0 ]; then
-            echo -n "    proxies: [" >> "$yaml"
-            for i in "${!proxy_arr[@]}"; do
-                p="${proxy_arr[$i]}"
-                p_trimmed="$(echo -e "${p}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-                echo -n "\"$p_trimmed\"" >> "$yaml"
-                if [ $i -lt $((${#proxy_arr[@]} - 1)) ]; then
-                    echo -n ", " >> "$yaml"
-                fi
-            done
-            echo "]" >> "$yaml"
-        fi
-
-        # 如果后面有 url-test 等额外参数，也可以继续解析（可扩展）
-    done
-
-    # 追加 rule-providers:
-    echo -e "\nrule-providers:" >> "$yaml"
-
-    # 处理 ruleset 行
-    grep '^ruleset=' "$ini" | while read -r line; do
-        IFS='=' read -r _ body <<< "$line"
-
-        # 可能三种情况，处理区分：
-        # 1. ruleset=🎯 全球直连,[]GEOSITE,private
-        # 2. ruleset=🌸 红杏影视,https://xxx/xxx.list,28800
-
-        IFS=',' read -r name url interval <<< "$body"
-
-        # 过滤空格
-        name=$(echo "$name" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-        url=$(echo "$url" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-        interval=$(echo "$interval" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-
-        # 处理 url 为空或是 [] 开头的 GEOSET 类型
-        if [[ "$url" == \[*\] ]]; then
-            # GEOSET 特殊处理，Clash 用 domain-set 或 geoip
-            # 这里以 domain-set 举例
-            key=$(echo "$name" | iconv -f utf-8 -t ascii//TRANSLIT | tr -cd 'a-zA-Z0-9' | tr '[:upper:]' '[:lower:]')
-            cat >> "$yaml" <<EOF
-  $key:
-    type: domain-set
-    behavior: classical
-    path: ./ruleset/$key.yaml
-    list:
-      - ${url//[\[\]]/}   # 去除 []
-EOF
-        else
-            # 普通 HTTP 规则
-            key=$(echo "$name" | iconv -f utf-8 -t ascii//TRANSLIT | tr -cd 'a-zA-Z0-9' | tr '[:upper:]' '[:lower:]')
-            interval=${interval:-86400}  # 默认一天
-
-            cat >> "$yaml" <<EOF
-  $key:
-    type: http
-    behavior: classical
-    path: ./ruleset/$key.yaml
-    url: "$url"
-    interval: $interval
-EOF
+            echo "  - name: $name" >> "$yaml_file"
+            echo "    type: url-test" >> "$yaml_file"
+            echo "    include-all: true" >> "$yaml_file"
+            if [[ -n "$filter" ]]; then
+                echo "    filter: (?i)${filter:1:-1}" >> "$yaml_file"
+            fi
+            echo "    url: $url" >> "$yaml_file"
+            echo "    interval: $interval" >> "$yaml_file"
+            echo "    tolerance: $tolerance" >> "$yaml_file"
         fi
     done
 
-    # 最后追加 rules 主规则，引用所有规则集
-    echo -e "\nrules:" >> "$yaml"
+    echo "" >> "$yaml_file"
+    echo "rule-providers:" >> "$yaml_file"
 
-    grep '^ruleset=' "$ini" | while read -r line; do
-        IFS='=' read -r _ body <<< "$line"
-        IFS=',' read -r name _ <<< "$body"
-        key=$(echo "$name" | iconv -f utf-8 -t ascii//TRANSLIT | tr -cd 'a-zA-Z0-9' | tr '[:upper:]' '[:lower:]')
+    grep '^ruleset=' "$file" | while IFS=',' read -r head ruleurl interval; do
+        id=$(echo "$head" | cut -d'=' -f2 | sed 's/.*,//;s/ //g')
+        idkey=$(basename "$ruleurl" .list | cut -d'.' -f1)
 
-        echo "  - RULE-SET,$key,$name" >> "$yaml"
+        if [[ "$ruleurl" == \[\]* ]]; then
+            continue  # GEOIP/MATCH 类型跳过
+        fi
+
+        echo "  $idkey:" >> "$yaml_file"
+        echo "    type: http" >> "$yaml_file"
+        echo "    behavior: classical" >> "$yaml_file"
+        echo "    path: ./ruleset/$idkey.yaml" >> "$yaml_file"
+        echo "    url: \"$ruleurl\"" >> "$yaml_file"
+        echo "    interval: ${interval:-86400}" >> "$yaml_file"
+        echo "    format: text" >> "$yaml_file"
     done
 
-    echo "  - MATCH,DIRECT" >> "$yaml"
+    echo "" >> "$yaml_file"
+    echo "rules:" >> "$yaml_file"
 
-    echo "✅ 生成完成 $yaml"
+    grep '^ruleset=' "$file" | while IFS=',' read -r rule1 rule2 rule3 rule4; do
+        name=$(echo "$rule1" | cut -d'=' -f2)
+        target=$(echo "$rule2" | sed 's/\[\]//g')
+
+        if [[ "$target" == "GEOIP" ]]; then
+            echo "  - GEOIP,$rule3,$name${rule4:+,$rule4}" >> "$yaml_file"
+        elif [[ "$target" == "FINAL" ]]; then
+            echo "  - MATCH,$name" >> "$yaml_file"
+        fi
+    done
+
+    echo "✅ 输出完成: $yaml_file"
 done
 
-echo "🎉 所有 ini 文件已成功转换并合并基础配置。"
+echo "🎉 全部 ini -> yaml 转换完成！"
 
