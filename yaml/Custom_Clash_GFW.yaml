@@ -20,7 +20,8 @@ proxies: []
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    proxies: [♻️ 自动选择,.*]
+    proxies: [♻️ 自动选择]
+    include-all: true
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
@@ -49,7 +50,7 @@ rule-providers:
 
 rules:
   - GEOSITE,gfw,🚀 手动选择
-  - hxmovie,🌸 红杏影视
+  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,telegram,🚀 手动选择,no-resolve
   - GEOIP,facebook,🚀 手动选择,no-resolve
   - GEOIP,twitter,🚀 手动选择,no-resolve

@@ -21,6 +21,7 @@ proxy-groups:
   - name: 🚀 手动选择
     type: select
     proxies: []
+    include-all: true
   - name: 🍎 苹果服务
     type: select
     proxies: [🎯 全球直连,🚀 手动选择]
@@ -68,9 +69,9 @@ rules:
   - GEOSITE,cn,🎯 全球直连
   - GEOIP,cn,🎯 全球直连,no-resolve
   - GEOSITE,apple,🍎 苹果服务
-  - custom_direct,🎯 全球直连
-  - custom_proxy,🚀 手动选择
-  - hxmovie,🌸 红杏影视
+  - RULE-SET,custom_direct,🎯 全球直连
+  - RULE-SET,custom_proxy,🚀 手动选择
+  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOSITE,google-cn,🎯 全球直连
   - GEOSITE,category-speedtest,🚀 测速工具
   - MATCH,🐟 漏网之鱼
