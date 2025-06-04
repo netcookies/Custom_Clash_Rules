@@ -1,3 +1,4 @@
+---
 port: 7890
 socks-port: 7891
 allow-lan: true
@@ -18,99 +19,56 @@ proxies: []
 
 
 proxy-groups:
-  - name: "🚀 手动选择"
+  - name: 🚀 手动选择
     type: select
-  - name: "📢 谷歌FCM"
+    proxies: []
+  - name: 📢 谷歌FCM
     type: select
-  - name: "🇬 谷歌服务"
+    proxies: [🚀 手动选择]
+  - name: 🇬 谷歌服务
     type: select
-  - name: "🚀 测速工具"
+    proxies: [🚀 手动选择]
+  - name: 🚀 测速工具
     type: select
-  - name: "🐟 漏网之鱼"
+    proxies: [🎯 全球直连]
+  - name: 🐟 漏网之鱼
     type: select
-  - name: "🎯 全球直连"
+    proxies: [🚀 手动选择]
+  - name: 🎯 全球直连
     type: select
-  - name: "🌸 红杏影视"
+    proxies: []
+  - name: 🌸 红杏影视
     type: url-test
+    include-all: true
+    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
 
 rule-providers:
-  :
+  Custom_Direct:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/Custom_Direct.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
     interval: 28800
-  :
+    format: text
+  Custom_Proxy:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/Custom_Proxy.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
     interval: 28800
-  :
+    format: text
+  hxmovie:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/hxmovie.yaml
     url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: cn
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: cn,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: google-cn
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: category-speedtest
-  fcm:
-    type: http
-    behavior: classical
-    path: ./ruleset/fcm.yaml
-    url: "[]GEOSITE"
-    interval: googlefcm
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: google
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: google,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]FINAL"
-    interval: 86400
+    format: text
 
 rules:
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🌸 红杏影视
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🚀 测速工具
-  - RULE-SET,fcm,📢 谷歌FCM
-  - RULE-SET,,🇬 谷歌服务
-  - RULE-SET,,🇬 谷歌服务
-  - RULE-SET,,🐟 漏网之鱼
-  - MATCH,DIRECT
+  - GEOIP,cn,🎯 全球直连,no-resolve
+  - GEOIP,google,🇬 谷歌服务,no-resolve
+  - MATCH,🐟 漏网之鱼

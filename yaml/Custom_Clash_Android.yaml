@@ -1,3 +1,4 @@
+---
 port: 7890
 socks-port: 7891
 allow-lan: true
@@ -18,302 +19,197 @@ proxies: []
 
 
 proxy-groups:
-  - name: "🚀 手动选择"
+  - name: 🚀 手动选择
     type: select
-  - name: "♻️ 自动选择"
+    proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区]
+  - name: ♻️ 自动选择
     type: url-test
-  - name: "💬 即时通讯"
+    include-all: true
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 💬 即时通讯
     type: select
-  - name: "🌐 社交媒体"
+    proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区]
+  - name: 🌐 社交媒体
     type: select
-  - name: "🤖 ChatGPT"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🤖 ChatGPT
     type: select
-  - name: "🤖 Copilot"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🤖 Copilot
     type: select
-  - name: "🤖 AI服务"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 🤖 AI服务
     type: select
-  - name: "🎶 TikTok"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🎶 TikTok
     type: select
-  - name: "📹 YouTube"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 📹 YouTube
     type: select
-  - name: "🎥 Netflix"
+    proxies: [🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🎥 Netflix
     type: select
-  - name: "🎥 DisneyPlus"
+    proxies: [🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🎥 DisneyPlus
     type: select
-  - name: "🎥 HBO"
+    proxies: [🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🎥 HBO
     type: select
-  - name: "🎥 PrimeVideo"
+    proxies: [🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 🎥 PrimeVideo
     type: select
-  - name: "🎥 Emby"
+    proxies: [🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 🎥 Emby
     type: select
-  - name: "🎻 Spotify"
+    proxies: [🌸 红杏影视, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 🎻 Spotify
     type: select
-  - name: "📢 谷歌FCM"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 📢 谷歌FCM
     type: select
-  - name: "🇬 谷歌服务"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🇬 谷歌服务
     type: select
-  - name: "🚀 测速工具"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🚀 测速工具
     type: select
-  - name: "🐟 漏网之鱼"
+    proxies: [🎯 全球直连, 🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择]
+  - name: 🐟 漏网之鱼
     type: select
-  - name: "🇭🇰 香港节点"
+    proxies: [🇭🇰 香港节点, 🇺🇸 美国节点, 🇯🇵 日本节点, 🇸🇬 新加坡节点, 🇼🇸 台湾节点, 🇰🇷 韩国节点, 🇨🇦 加拿大节点, 🇬🇧 英国节点, 🇫🇷 法国节点, 🇩🇪 德国节点, 🇳🇱 荷兰节点, 🇹🇷 土耳其节点, 🌐 其他地区, 🚀 手动选择, ♻️ 自动选择, 🎯 全球直连]
+  - name: 🇭🇰 香港节点
     type: url-test
-  - name: "🇺🇸 美国节点"
+    include-all: true
+    filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong|深港
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇺🇸 美国节点
     type: url-test
-  - name: "🇯🇵 日本节点"
+    include-all: true
+    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇯🇵 日本节点
     type: url-test
-    proxies: ["^-"]
-  - name: "🇸🇬 新加坡节点"
+    include-all: true
+    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇸🇬 新加坡节点
     type: url-test
-  - name: "🇼🇸 台湾节点"
+    include-all: true
+    filter: (?i)新加坡|坡|狮城|SG|Singapore
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇼🇸 台湾节点
     type: url-test
-  - name: "🇰🇷 韩国节点"
+    include-all: true
+    filter: (?i)台|新北|彰化|TW|Taiwan
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇰🇷 韩国节点
     type: url-test
-  - name: "🇨🇦 加拿大节点"
+    include-all: true
+    filter: (?i)KR|Korea|KOR|首尔|韩|韓
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇨🇦 加拿大节点
     type: url-test
-  - name: "🇬🇧 英国节点"
+    include-all: true
+    filter: (?i)加拿大|Canada|渥太华|温哥华|卡尔加里
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇬🇧 英国节点
     type: url-test
-  - name: "🇫🇷 法国节点"
+    include-all: true
+    filter: (?i)英国|Great Britain
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇫🇷 法国节点
     type: url-test
-  - name: "🇩🇪 德国节点"
+    include-all: true
+    filter: (?i)法国|France|巴黎
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇩🇪 德国节点
     type: url-test
-  - name: "🇳🇱 荷兰节点"
+    include-all: true
+    filter: (?i)德国|Germany|柏林|法兰克福
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇳🇱 荷兰节点
     type: url-test
-  - name: "🇹🇷 土耳其节点"
+    include-all: true
+    filter: (?i)荷兰|Netherlands|阿姆斯特丹
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🇹🇷 土耳其节点
     type: url-test
-  - name: "🌐 其他地区"
+    include-all: true
+    filter: (?i)土耳其|Turkey|Türkiye
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🌐 其他地区
     type: url-test
-    proxies: ["^-"]
-  - name: "🎯 全球直连"
+    include-all: true
+    filter: (?i)^(?!.*(港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye)).*
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🎯 全球直连
     type: select
-  - name: "🌸 红杏影视"
+    proxies: []
+  - name: 🌸 红杏影视
     type: url-test
+    include-all: true
+    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
 
 rule-providers:
-  :
+  Custom_Direct:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: private
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: private,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/Custom_Direct.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
     interval: 28800
-  :
+    format: text
+  Custom_Proxy:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/Custom_Proxy.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
     interval: 28800
-  :
+    format: text
+  hxmovie:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: cn
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: cn,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: google-cn
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: category-public-tracker
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: category-communication
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: category-social-media-!cn
-  chatgpt:
-    type: http
-    behavior: classical
-    path: ./ruleset/chatgpt.yaml
-    url: "[]GEOSITE"
-    interval: openai
-  copilot:
-    type: http
-    behavior: classical
-    path: ./ruleset/copilot.yaml
-    url: "[]GEOSITE"
-    interval: bing
-  ai:
-    type: http
-    behavior: classical
-    path: ./ruleset/ai.yaml
-    url: "[]GEOSITE"
-    interval: category-ai-!cn
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: category-speedtest
-  youtube:
-    type: http
-    behavior: classical
-    path: ./ruleset/youtube.yaml
-    url: "[]GEOSITE"
-    interval: youtube
-  fcm:
-    type: http
-    behavior: classical
-    path: ./ruleset/fcm.yaml
-    url: "[]GEOSITE"
-    interval: googlefcm
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: google
-  tiktok:
-    type: http
-    behavior: classical
-    path: ./ruleset/tiktok.yaml
-    url: "[]GEOSITE"
-    interval: tiktok
-  netflix:
-    type: http
-    behavior: classical
-    path: ./ruleset/netflix.yaml
-    url: "[]GEOSITE"
-    interval: netflix
-  disneyplus:
-    type: http
-    behavior: classical
-    path: ./ruleset/disneyplus.yaml
-    url: "[]GEOSITE"
-    interval: disney
-  hbo:
-    type: http
-    behavior: classical
-    path: ./ruleset/hbo.yaml
-    url: "[]GEOSITE"
-    interval: hbo
-  primevideo:
-    type: http
-    behavior: classical
-    path: ./ruleset/primevideo.yaml
-    url: "[]GEOSITE"
-    interval: primevideo
-  emby:
-    type: http
-    behavior: classical
-    path: ./ruleset/emby.yaml
-    url: "[]GEOSITE"
-    interval: category-emby
-  spotify:
-    type: http
-    behavior: classical
-    path: ./ruleset/spotify.yaml
-    url: "[]GEOSITE"
-    interval: spotify
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: gfw
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/hxmovie.yaml
     url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: telegram,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: twitter,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: facebook,no-resolve
-  netflix:
-    type: http
-    behavior: classical
-    path: ./ruleset/netflix.yaml
-    url: "[]GEOIP"
-    interval: netflix,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: google,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]FINAL"
-    interval: 86400
+    format: text
 
 rules:
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,🎯 全球直连
-  - RULE-SET,,💬 即时通讯
-  - RULE-SET,,🌐 社交媒体
-  - RULE-SET,chatgpt,🤖 ChatGPT
-  - RULE-SET,copilot,🤖 Copilot
-  - RULE-SET,ai,🤖 AI服务
-  - RULE-SET,,🚀 测速工具
-  - RULE-SET,youtube,📹 YouTube
-  - RULE-SET,fcm,📢 谷歌FCM
-  - RULE-SET,,🇬 谷歌服务
-  - RULE-SET,tiktok,🎶 TikTok
-  - RULE-SET,netflix,🎥 Netflix
-  - RULE-SET,disneyplus,🎥 DisneyPlus
-  - RULE-SET,hbo,🎥 HBO
-  - RULE-SET,primevideo,🎥 PrimeVideo
-  - RULE-SET,emby,🎥 Emby
-  - RULE-SET,spotify,🎻 Spotify
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🌸 红杏影视
-  - RULE-SET,,💬 即时通讯
-  - RULE-SET,,🌐 社交媒体
-  - RULE-SET,,🌐 社交媒体
-  - RULE-SET,netflix,🎥 Netflix
-  - RULE-SET,,🇬 谷歌服务
-  - RULE-SET,,🐟 漏网之鱼
-  - MATCH,DIRECT
+  - GEOIP,private,🎯 全球直连,no-resolve
+  - GEOIP,cn,🎯 全球直连,no-resolve
+  - GEOIP,telegram,💬 即时通讯,no-resolve
+  - GEOIP,twitter,🌐 社交媒体,no-resolve
+  - GEOIP,facebook,🌐 社交媒体,no-resolve
+  - GEOIP,netflix,🎥 Netflix,no-resolve
+  - GEOIP,google,🇬 谷歌服务,no-resolve
+  - MATCH,🐟 漏网之鱼

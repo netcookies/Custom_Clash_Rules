@@ -1,3 +1,4 @@
+---
 port: 7890
 socks-port: 7891
 allow-lan: true
@@ -18,58 +19,37 @@ proxies: []
 
 
 proxy-groups:
-  - name: "🚀 手动选择"
+  - name: 🚀 手动选择
     type: select
-  - name: "♻️ 自动选择"
+    proxies: [♻️ 自动选择]
+  - name: ♻️ 自动选择
     type: url-test
-  - name: "🎯 全球直连"
+    include-all: true
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🎯 全球直连
     type: select
-  - name: "🌸 红杏影视"
+    proxies: []
+  - name: 🌸 红杏影视
     type: url-test
+    include-all: true
+    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
+    tolerance: 50
 
 rule-providers:
-  :
+  hxmovie:
     type: http
     behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOSITE"
-    interval: gfw
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
+    path: ./ruleset/hxmovie.yaml
     url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: telegram,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: facebook,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]GEOIP"
-    interval: twitter,no-resolve
-  :
-    type: http
-    behavior: classical
-    path: ./ruleset/.yaml
-    url: "[]FINAL"
-    interval: 86400
+    format: text
 
 rules:
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🌸 红杏影视
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🚀 手动选择
-  - RULE-SET,,🎯 全球直连
-  - MATCH,DIRECT
+  - GEOIP,telegram,🚀 手动选择,no-resolve
+  - GEOIP,facebook,🚀 手动选择,no-resolve
+  - GEOIP,twitter,🚀 手动选择,no-resolve
+  - MATCH,🎯 全球直连
