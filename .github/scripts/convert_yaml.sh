@@ -55,16 +55,17 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
                 if [[ "$name" == "🌐 其他地区" ]]; then
-                    #exclude_filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | sed -E 's/^\`\(\^\(\?!\.\*\((.*)\)\)\.\*\)\`$/\1/' | sed 's/^/(?i)/')
-                    #[[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
-                    # 提取 `(...)` 中内容（含 ^(?!.*...））
-                    raw_filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`')                  
-                    # 去掉前缀 `^(?!.*(` 和后缀 `)).*`
-                    exclude_pattern=$(echo "$raw_filter" | sed -E 's/^\^\(\?!\.\*\(//' | sed -E 's/\)\)\.\*\)$//')                   
-                    # 添加前缀 (?i)
-                    exclude_filter="(?i)$exclude_pattern"                   
-                    # 示例输出到 yaml（仅此行负责写入）
-                    echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
+                    # 提取包含正则的部分（去掉 ` 包围）
+                    raw_filter=$(echo "$line" | grep -oP '\`\(\^\(\?!\.\*\(.*\)\)\.\*\)\`' | tr -d '\`')
+                    
+                    # 去除前缀 ^(?!.*( 和后缀 )).*，只保留中间正则内容
+                    exclude_pattern=$(echo "$raw_filter" | sed -E 's/^\^\(\?!\.\*\(//' | sed -E 's/\)\)\.\*\)$//')
+                    
+                    # 添加 (?i) 忽略大小写
+                    exclude_filter="(?i)$exclude_pattern"
+                    
+                    # 输出
+                    echo "    exclude-filter: $exclude_filter"
                 else
                     [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
                 fi
