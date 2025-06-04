@@ -47,8 +47,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 done
             elif [[ "$type" == "url-test" ]]; then
                 # 提取 filter 正则部分（带括号）
-                rawfilter=$(echo "$line" | grep -oP '\`\(.*\)\`')
-                filter=$(echo "$rawfilter" | tr -d '\`\(\)' | sed 's/^/(?i)/')
+                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`\(\)' | sed 's/^/(?i)/')
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
                 tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')        
@@ -56,7 +55,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
                 if [[ "$name" == "🌐 其他地区" ]]; then
-                    exclude_filter_step1=$(echo "$rawfilter" | sed 's/^`(//' | sed 's/)$//')
+                    exclude_filter_step1=$(echo "$line" | grep -oP '\`\(.*\)\`' | sed 's/^`(//' | sed 's/)$//')
                     echo "testing:*******$exclude_filter_step1"
                     exclude_filter=$(echo "$exclude_filter_step1" | grep -oP '\(\K[^)]*(?=\))' | sed 's/^/(?i)/')
                     [[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
