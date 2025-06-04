@@ -64,19 +64,6 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 if [[ "$type_clean" == "FINAL" ]]; then
                     rules+=("  - MATCH,$name")
                 else
-                    # 生成 key 名，取 type_clean 转小写去除非字母数字
-                    key=$(echo "$type_clean" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]')
-                    # 记录 rule-provider
-                    rule_providers["$key"]=$(cat <<EOF
-  $key:
-    type: http
-    behavior: classical
-    path: ./ruleset/$key.yaml
-    url: "$field"
-    interval: ${opt:-28800}
-    format: text
-EOF
-)
                     # 生成 rules 入口
                     rule_line="  - $type_clean,$field,$name"
                     [[ -n "$opt" ]] && rule_line="$rule_line,$opt"
