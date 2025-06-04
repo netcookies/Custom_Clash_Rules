@@ -46,20 +46,6 @@ rule-providers:
     url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
-  geoip:
-    type: http
-    behavior: classical
-    path: ./ruleset/geoip.yaml
-    url: "twitter"
-    interval: no-resolve
-    format: text
-  geosite:
-    type: http
-    behavior: classical
-    path: ./ruleset/geosite.yaml
-    url: "gfw"
-    interval: 28800
-    format: text
 
 rules:
   - GEOSITE,gfw,🚀 手动选择

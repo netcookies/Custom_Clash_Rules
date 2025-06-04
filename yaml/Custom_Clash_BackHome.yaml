@@ -49,25 +49,11 @@ rule-providers:
     url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
-  geoip:
-    type: http
-    behavior: classical
-    path: ./ruleset/geoip.yaml
-    url: "cn"
-    interval: no-resolve
-    format: text
   custom_direct:
     type: http
     behavior: classical
     path: ./ruleset/custom_direct.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
-    interval: 28800
-    format: text
-  geosite:
-    type: http
-    behavior: classical
-    path: ./ruleset/geosite.yaml
-    url: "cn"
     interval: 28800
     format: text
   custom_proxy:
