@@ -33,11 +33,6 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
             type=$(echo "$line" | grep -oP '\`(select|url-test)\`' | tr -d '\`')
 
             if [[ "$type" == "select" ]]; then
-                proxies=$(echo "$line" | grep -oP '\[\].*' | sed 's/\[\]//g' | tr '\`' '\n' | sed '/^$/d' | paste -sd, -)
-                echo "  - name: $name" >> "$yaml_file"
-                echo "    type: select" >> "$yaml_file"
-                echo "    proxies: [${proxies}]" >> "$yaml_file"
-            if [[ "$type" == "select" ]]; then
                 # 先把末尾的 .* 去掉再处理 proxies
                 line_no_dotstar=$(echo "$line" | sed 's/\.\*$//')
                 proxies=$(echo "$line_no_dotstar" | grep -oP '\[\].*' | sed 's/\[\]//g' | tr '\`' '\n' | sed '/^$/d' | paste -sd, -)
