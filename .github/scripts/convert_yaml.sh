@@ -46,28 +46,20 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     echo "      - $proxy" >> "$yaml_file"
                 done
             elif [[ "$type" == "url-test" ]]; then
-                # 提取 filter 正则部分（带括号）
-                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`\(\)' | sed 's/^/(?i)/')
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
                 tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')        
                 echo "  - name: $name" >> "$yaml_file"
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
-                if [[ "$name" == "🌐 其他地区" ]]; then
-                    # 提取包含正则的部分（去掉 ` 包围）
-                    raw_filter=$(echo "$line" | grep -oP '\`\(\^\(\?!\.\*\(.*\)\)\.\*\)\`' | tr -d '\`')
-                    
-                    # 去除前缀 ^(?!.*( 和后缀 )).*，只保留中间正则内容
-                    exclude_pattern=$(echo "$raw_filter" | sed -E 's/^\^\(\?!\.\*\(//' | sed -E 's/\)\)\.\*\)$//')
-                    
-                    # 添加 (?i) 忽略大小写
-                    exclude_filter="(?i)$exclude_pattern"
-                    
-                    # 输出
+                # raw_filter 提取
+                raw_filter=$(echo "$line" | grep -oP '\`\([^`]*\)\`' | tr -d '\`')  
+                if [[ "$raw_filter" =~ ^\^\(\?!\.\*\((.*)\)\)\.\*\)$ ]]; then
+                    exclude_filter="(?i)${BASH_REMATCH[1]}"
                     echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
                 else
-                    [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
+                    filter="(?i)$raw_filter"
+                    echo "    filter: $filter" >> "$yaml_file"
                 fi
                 echo "    url: $url" >> "$yaml_file"
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
