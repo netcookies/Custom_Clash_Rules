@@ -1,55 +1,65 @@
-port: 7890
-socks-port: 7891
-allow-lan: true
-mode: rule
-log-level: info
+rules:
+  - GEOSITE,cn,🎯 全球直连
+  - GEOIP,cn,no-resolve,🎯 全球直连
+  - GEOSITE,google-cn,🎯 全球直连
+  - GEOSITE,category-speedtest,🚀 测速工具
+  - GEOSITE,googlefcm,📢 谷歌FCM
+  - GEOSITE,google,🇬 谷歌服务
+  - GEOIP,google,no-resolve,🇬 谷歌服务
+  - MATCH,🐟 漏网之鱼
 
-dns:
-  enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: redir-host
-  nameserver:
-    - 223.5.5.5
-    - 114.114.114.114
 
-proxies: []
+rule-providers:
+🎯 全球直连:
+  type: http
+  behavior: classical
+  path: ./ruleset/🎯 全球直连.yaml
+  url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
+  interval: 28800
+  format: text
 
-# 后续会追加 proxy-groups 和 rule-providers
+🚀 手动选择:
+  type: http
+  behavior: classical
+  path: ./ruleset/🚀 手动选择.yaml
+  url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
+  interval: 28800
+  format: text
+
+🌸 红杏影视:
+  type: http
+  behavior: classical
+  path: ./ruleset/🌸 红杏影视.yaml
+  url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+  interval: 28800
+  format: text
+
 
 
 proxy-groups:
+  - name: 🚀 手动选择
+    type: select
+    proxies: ['.*']
+  - name: 📢 谷歌FCM
+    type: select
+    proxies: ['🚀 手动选择', '🎯 全球直连']
+  - name: 🇬 谷歌服务
+    type: select
+    proxies: ['🚀 手动选择', '🎯 全球直连']
+  - name: 🚀 测速工具
+    type: select
+    proxies: ['🎯 全球直连', '🚀 手动选择']
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies: ['🚀 手动选择', '🎯 全球直连']
+  - name: 🎯 全球直连
+    type: select
+    proxies: ['DIRECT']
+  - name: 🌸 红杏影视
+    type: url-test
+    include-all: false
+    url: (红杏|红杏云|hongxingdl|hongxing|hongxingyun)
+    interval: https://cp.cloudflare.com/generate_204`300
+    tolerance: 50
 
-rule-providers:
-
-  custom_direct:
-    type: http
-    behavior: classical
-    path: ./ruleset/custom_direct.yaml
-    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
-    interval: 28800
-    format: text
-  custom_proxy:
-    type: http
-    behavior: classical
-    path: ./ruleset/custom_proxy.yaml
-    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
-    interval: 28800
-    format: text
-  hxmovie:
-    type: http
-    behavior: classical
-    path: ./ruleset/hxmovie.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
-    interval: 28800
-    format: text
-
-rules:
-- GEOSITE,cn,🎯 全球直连
-- GEOIP,cn,🎯 全球直连,no-resolve
-- GEOSITE,google-cn,🎯 全球直连
-- GEOSITE,category-speedtest,🚀 测速工具
-- GEOSITE,googlefcm,📢 谷歌FCM
-- GEOSITE,google,🇬 谷歌服务
-- GEOIP,google,🇬 谷歌服务,no-resolve
-  - MATCH,🐟 漏网之鱼
 
