@@ -1,10 +1,10 @@
 #!/bin/bash
 
-set -euo pipefail
+set -e
 
 CFG_DIR="./cfg"
 YAML_DIR="./yaml"
-TEMPLATE_FILE="./base/template.yaml"
+TEMPLATE="./base/template.yaml"
 
 mkdir -p "$YAML_DIR"
 
@@ -12,146 +12,113 @@ echo "🔧 开始处理目录: $CFG_DIR"
 
 find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "📝 处理文件: $file"
-    base_name=$(basename "$file" .ini)
-    yaml_file="$YAML_DIR/$base_name.yaml"
+    filename=$(basename "$file" .ini)
+    yaml_file="$YAML_DIR/$filename.yaml"
 
-    # 写入模板内容开头
-    if [[ -f "$TEMPLATE_FILE" ]]; then
-        cat "$TEMPLATE_FILE" > "$yaml_file"
-        echo "" >> "$yaml_file"
-    else
-        echo "# 生成自 $file" > "$yaml_file"
-    fi
+    # 复制基础模板到新yaml文件
+    cp "$TEMPLATE" "$yaml_file"
 
-    # 初始化 rules 和 proxy_groups 临时存储
-    rules_lines=()
-    proxy_groups_lines=()
+    # 清理临时变量
+    unset rules
+    unset rule_providers
+    declare -A rule_providers
+    rules=()
 
-    while IFS= read -r line || [[ -n "$line" ]]; do
-        # 跳过空行和注释
-        [[ -z "$line" || "$line" =~ ^[[:space:]]*; ]] && continue
+    echo -e "\nproxy-groups:" >> "$yaml_file"
 
-        if [[ "$line" =~ ^ruleset= ]]; then
-            val="${line#ruleset=}"
-            # 判断是否rule-provider（包含 []）
-            if [[ "$val" =~ ^([^,]+),\[\]([^,]+),([^,]+)(,([^,]+))?$ ]]; then
-                # 格式：name,[]type,subname[,option]
-                name="${BASH_REMATCH[1]}"
-                rtype="${BASH_REMATCH[2]}"
-                subname="${BASH_REMATCH[3]}"
-                option="${BASH_REMATCH[5]:-}"
+    while IFS= read -r line; do
+        # 处理 custom_proxy_group
+        if [[ "$line" =~ ^custom_proxy_group= ]]; then
+            name=$(echo "$line" | cut -d'=' -f2 | cut -d'\`' -f1)
+            type=$(echo "$line" | grep -oP '\`(select|url-test)\`' | tr -d '\`')
 
-                if [[ "$rtype" == "FINAL" ]]; then
-                    # MATCH 类型
-                    rules_lines+=("  - MATCH,$name")
+            if [[ "$type" == "select" ]]; then
+                proxies=$(echo "$line" | grep -oP '\[\].*' | sed 's/\[\]//g' | tr '\`' '\n' | sed '/^$/d' | paste -sd, -)
+                echo "  - name: $name" >> "$yaml_file"
+                echo "    type: select" >> "$yaml_file"
+                echo "    proxies: [${proxies}]" >> "$yaml_file"
+            elif [[ "$type" == "url-test" ]]; then
+                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`' | sed 's/^/(?i)/')
+                url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
+                interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
+                tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')
+                echo "  - name: $name" >> "$yaml_file"
+                echo "    type: url-test" >> "$yaml_file"
+                echo "    include-all: true" >> "$yaml_file"
+                [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
+                echo "    url: $url" >> "$yaml_file"
+                echo "    interval: ${interval:-300}" >> "$yaml_file"
+                echo "    tolerance: ${tolerance:-50}" >> "$yaml_file"
+            fi
+
+        # 处理 ruleset
+        elif [[ "$line" =~ ^ruleset= ]]; then
+            rest=${line#ruleset=}
+            IFS=',' read -r name type field opt <<< "$rest"
+
+            if [[ "$type" =~ ^\[\](.*)$ ]]; then
+                # rule-providers 规则
+                type_clean=${BASH_REMATCH[1]}
+                key=""
+                # FINAL 单独处理
+                if [[ "$type_clean" == "FINAL" ]]; then
+                    rules+=("  - MATCH,$name")
                 else
-                    # 普通 GEOIP、GEOSITE 类型，生成缩进注意
-                    if [[ -n "$option" ]]; then
-                        rules_lines+=("  - $rtype,$subname,$name,$option")
-                    else
-                        rules_lines+=("  - $rtype,$subname,$name")
-                    fi
-                fi
-
-            elif [[ "$val" =~ ^([^,]+),(https?://[^,]+),([0-9]+)$ ]]; then
-                # 格式: name,url,interval 无 []
-                name="${BASH_REMATCH[1]}"
-                url="${BASH_REMATCH[2]}"
-                interval="${BASH_REMATCH[3]}"
-                key=$(echo "$name" | iconv -f utf-8 -t ascii//TRANSLIT | tr ' ' '_' | tr -cd '[:alnum:]_')
-                # rule-provider 格式
-                cat >> "$yaml_file" <<EOF
-
-$key:
-  type: http
-  behavior: classical
-  path: ./ruleset/$key.yaml
-  url: "$url"
-  interval: $interval
-  format: text
+                    # 生成 key 名，取 type_clean 转小写去除非字母数字
+                    key=$(echo "$type_clean" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]')
+                    # 记录 rule-provider
+                    rule_providers["$key"]=$(cat <<EOF
+  $key:
+    type: http
+    behavior: classical
+    path: ./ruleset/$key.yaml
+    url: "$field"
+    interval: ${opt:-28800}
+    format: text
 EOF
-
+)
+                    # 生成 rules 入口
+                    rule_line="  - $type_clean,$field,$name"
+                    [[ -n "$opt" ]] && rule_line="$rule_line,$opt"
+                    rules+=("$rule_line")
+                fi
             else
-                echo "⚠️ 未识别的 ruleset 格式: $val"
+                # http 类型无 [] 直接是rule-provider
+                # 此时 type 是 url，field 是 interval
+                key=$(basename "$type" .list | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
+                rule_providers["$key"]=$(cat <<EOF
+  $key:
+    type: http
+    behavior: classical
+    path: ./ruleset/$key.yaml
+    url: "$type"
+    interval: ${field:-28800}
+    format: text
+EOF
+)
+                # rules 添加对应条目
+                rules+=("  - $key,$name")
             fi
-
-        elif [[ "$line" =~ ^custom_proxy_group= ]]; then
-            # 去掉前缀
-            content=${line#custom_proxy_group=}
-
-            # 取名称和类型
-            name=${content%%\`*} # `前部分是name
-            rest=${content#*\`}  # 去掉name和第一个反引号
-
-            # 取类型（select, url-test）
-            type_val=${rest%%\`*}
-
-            if [[ "$type_val" == "select" ]]; then
-                # 取所有 []后代理名
-                proxies=()
-                proxy_str=${content#*select\`}
-                while [[ "$proxy_str" =~ \[\]([^`\[]+) ]]; do
-                    proxies+=("${BASH_REMATCH[1]}")
-                    proxy_str=${proxy_str#*\[\]*}
-                done
-                proxies_joined=$(IFS=,; echo "${proxies[*]}")
-
-                proxy_groups_lines+=("  - name: $name")
-                proxy_groups_lines+=("    type: select")
-                proxy_groups_lines+=("    proxies: [$proxies_joined]")
-
-            elif [[ "$type_val" == "url-test" ]]; then
-                # 取 filter (括号内正则)
-                filter=""
-                if [[ "$content" =~ \`(\(.*\))\` ]]; then
-                    filter="${BASH_REMATCH[1]}"
-                    filter="(?i)$filter"
-                fi
-
-                # 取 url
-                url=""
-                if [[ "$content" =~ \`(https?://[^`]+)\` ]]; then
-                    url="${BASH_REMATCH[1]}"
-                fi
-
-                # 取 interval 和 tolerance
-                interval=300
-                tolerance=50
-                if [[ "$content" =~ \`([0-9]+),,([0-9]+)\` ]]; then
-                    interval="${BASH_REMATCH[1]}"
-                    tolerance="${BASH_REMATCH[2]}"
-                fi
-
-                proxy_groups_lines+=("  - name: $name")
-                proxy_groups_lines+=("    type: url-test")
-                proxy_groups_lines+=("    include-all: true")
-                [[ -n "$filter" ]] && proxy_groups_lines+=("    filter: $filter")
-                proxy_groups_lines+=("    url: $url")
-                proxy_groups_lines+=("    interval: $interval")
-                proxy_groups_lines+=("    tolerance: $tolerance")
-            else
-                echo "⚠️ 未识别的 custom_proxy_group 类型: $type_val"
-            fi
-
         fi
-
     done < "$file"
 
-    # 写入 rules 部分
-    echo "rules:" >> "$yaml_file"
-    for line in "${rules_lines[@]}"; do
-        echo "$line" >> "$yaml_file"
-    done
-    echo "" >> "$yaml_file"
+    # 输出 rule-providers
+    if [[ ${#rule_providers[@]} -gt 0 ]]; then
+        echo -e "\nrule-providers:" >> "$yaml_file"
+        for key in "${!rule_providers[@]}"; do
+            echo "${rule_providers[$key]}" >> "$yaml_file"
+        done
+    fi
 
-    # 写入 proxy-groups 部分
-    echo "proxy-groups:" >> "$yaml_file"
-    for line in "${proxy_groups_lines[@]}"; do
-        echo "$line" >> "$yaml_file"
-    done
-    echo "" >> "$yaml_file"
+    # 输出 rules
+    if [[ ${#rules[@]} -gt 0 ]]; then
+        echo -e "\nrules:" >> "$yaml_file"
+        for r in "${rules[@]}"; do
+            echo "$r" >> "$yaml_file"
+        done
+    fi
 
-    echo "✅ 文件处理完成: $yaml_file"
+    echo "✅ 已生成: $yaml_file"
 done
 
-echo "🎉 所有 ini 文件已成功转换为 yaml。"
+echo "🎉 所有 ini 文件已成功转换为 YAML"
