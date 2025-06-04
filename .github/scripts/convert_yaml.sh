@@ -46,14 +46,29 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     echo "      - $proxy" >> "$yaml_file"
                 done
             elif [[ "$type" == "url-test" ]]; then
-                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`\(\)' | sed 's/^/(?i)/')
+                # 提取 filter 正则部分（带括号）
+                raw_filter=$(echo "$line" | grep -oP '\`\(.*\)\`')
+                
+                # 判断是否为 exclude-pattern（^(?!.*(...)).*）
+                if [[ "$raw_filter" =~ \^\(\?!\.\*\((.*)\)\)\.\* ]]; then
+                    # 是 exclude，提取内部关键词
+                    exclude_filter=$(echo "$raw_filter" | sed -E 's/^\`\(\^\(\?!\.\*\((.*)\)\)\.\*\)\`$/\1/' | sed 's/^/(?i)/')
+                else
+                    # 是普通 filter，去掉包裹符
+                    filter=$(echo "$raw_filter" | tr -d '\`\(\)' | sed 's/^/(?i)/')
+                fi
+            
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
                 tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')
+            
                 echo "  - name: $name" >> "$yaml_file"
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
+                
                 [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
+                [[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
+                
                 echo "    url: $url" >> "$yaml_file"
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
                 echo "    tolerance: ${tolerance:-50}" >> "$yaml_file"
