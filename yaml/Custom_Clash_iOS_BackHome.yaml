@@ -20,8 +20,8 @@ proxies: []
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    proxies: []
     include-all: true
+    proxies: []
   - name: 🍎 苹果服务
     type: select
     proxies: [🎯 全球直连,🚀 手动选择]

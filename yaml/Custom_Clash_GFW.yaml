@@ -20,8 +20,8 @@ proxies: []
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    proxies: [♻️ 自动选择]
     include-all: true
+    proxies: [♻️ 自动选择]
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
