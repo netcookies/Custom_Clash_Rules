@@ -53,14 +53,12 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
                 # 提取 () 中的正则内容
-                raw_filter=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`')
-                
+                raw_filter=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`\(\)')
                 # 判断是否为 exclude 模式（即以 ^(?!.* 开头，且中间是一个子括号）
-                if [[ "$raw_filter" =~ ^\^\(\?\!\.\*\((.*)\)\)\.\*\)\$? ]]; then
+                if [[ "$raw_filter" != (.*\|)+.* ]]; then
                     # 提取中间的黑名单内容（Bash 捕获组不支持，改用手动去前后缀）
-                    temp="${raw_filter#^\(\?!\.\*\(}"
-                    exclude_body="${temp%%\)\)\.\*\)*}"  # 去除结尾
-                    echo "    exclude-filter: (?i)$exclude_body" >> "$yaml_file"
+                    temp="港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye"
+                    echo "    exclude-filter: (?i)$temp" >> "$yaml_file"
                 else
                     echo "    filter: (?i)$raw_filter" >> "$yaml_file"
                 fi
