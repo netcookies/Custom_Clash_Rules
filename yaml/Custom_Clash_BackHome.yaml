@@ -21,19 +21,26 @@ proxy-groups:
   - name: 🚀 手动选择
     type: select
     include-all: true
-    proxies: []
+    proxies:
   - name: 🍎 苹果服务
     type: select
-    proxies: [🎯 全球直连,🚀 手动选择]
+    proxies:
+      - 🎯 全球直连
+      - 🚀 手动选择
   - name: 🚀 测速工具
     type: select
-    proxies: [🎯 全球直连,🚀 手动选择]
+    proxies:
+      - 🎯 全球直连
+      - 🚀 手动选择
   - name: 🐟 漏网之鱼
     type: select
-    proxies: [🎯 全球直连,🚀 手动选择]
+    proxies:
+      - 🎯 全球直连
+      - 🚀 手动选择
   - name: 🎯 全球直连
     type: select
-    proxies: [DIRECT]
+    proxies:
+      - DIRECT
   - name: 🌸 红杏影视
     type: url-test
     include-all: true

@@ -21,7 +21,8 @@ proxy-groups:
   - name: 🚀 手动选择
     type: select
     include-all: true
-    proxies: [♻️ 自动选择]
+    proxies:
+      - ♻️ 自动选择
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
@@ -30,7 +31,8 @@ proxy-groups:
     tolerance: 50
   - name: 🎯 全球直连
     type: select
-    proxies: [DIRECT]
+    proxies:
+      - DIRECT
   - name: 🌸 红杏影视
     type: url-test
     include-all: true
