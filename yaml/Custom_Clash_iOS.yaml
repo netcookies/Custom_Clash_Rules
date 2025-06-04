@@ -1,0 +1,307 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+
+proxies: []
+
+# 后续会追加 proxy-groups 和 rule-providers
+
+
+proxy-groups:
+  - name: "🚀 手动选择"
+    type: select
+  - name: "♻️ 自动选择"
+    type: url-test
+  - name: "💬 即时通讯"
+    type: select
+  - name: "🌐 社交媒体"
+    type: select
+  - name: "🤖 ChatGPT"
+    type: select
+  - name: "🤖 Copilot"
+    type: select
+  - name: "🤖 AI服务"
+    type: select
+  - name: "🎶 TikTok"
+    type: select
+  - name: "📹 YouTube"
+    type: select
+  - name: "🎥 Netflix"
+    type: select
+  - name: "🎥 DisneyPlus"
+    type: select
+  - name: "🎥 HBO"
+    type: select
+  - name: "🎥 PrimeVideo"
+    type: select
+  - name: "🎥 AppleTV+"
+    type: select
+  - name: "🎥 Emby"
+    type: select
+  - name: "🎻 Spotify"
+    type: select
+  - name: "🍎 苹果服务"
+    type: select
+  - name: "🚀 测速工具"
+    type: select
+  - name: "🐟 漏网之鱼"
+    type: select
+  - name: "🇭🇰 香港节点"
+    type: url-test
+  - name: "🇺🇸 美国节点"
+    type: url-test
+  - name: "🇯🇵 日本节点"
+    type: url-test
+    proxies: ["^-"]
+  - name: "🇸🇬 新加坡节点"
+    type: url-test
+  - name: "🇼🇸 台湾节点"
+    type: url-test
+  - name: "🇰🇷 韩国节点"
+    type: url-test
+  - name: "🇨🇦 加拿大节点"
+    type: url-test
+  - name: "🇬🇧 英国节点"
+    type: url-test
+  - name: "🇫🇷 法国节点"
+    type: url-test
+  - name: "🇩🇪 德国节点"
+    type: url-test
+  - name: "🇳🇱 荷兰节点"
+    type: url-test
+  - name: "🇹🇷 土耳其节点"
+    type: url-test
+  - name: "🇻🇳 越南节点"
+    type: url-test
+  - name: "🎯 全球直连"
+    type: select
+  - name: "🌐 其他地区"
+    type: url-test
+    proxies: ["^-"]
+  - name: "🌸 红杏影视"
+    type: url-test
+
+rule-providers:
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: private
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: private,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: cn,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: google-cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-communication
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-social-media-!cn
+  chatgpt:
+    type: http
+    behavior: classical
+    path: ./ruleset/chatgpt.yaml
+    url: "[]GEOSITE"
+    interval: openai
+  copilot:
+    type: http
+    behavior: classical
+    path: ./ruleset/copilot.yaml
+    url: "[]GEOSITE"
+    interval: bing
+  ai:
+    type: http
+    behavior: classical
+    path: ./ruleset/ai.yaml
+    url: "[]GEOSITE"
+    interval: category-ai-!cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: speedtest
+  youtube:
+    type: http
+    behavior: classical
+    path: ./ruleset/youtube.yaml
+    url: "[]GEOSITE"
+    interval: youtube
+  appletv:
+    type: http
+    behavior: classical
+    path: ./ruleset/appletv.yaml
+    url: "[]GEOSITE"
+    interval: apple-tvplus
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: apple
+  tiktok:
+    type: http
+    behavior: classical
+    path: ./ruleset/tiktok.yaml
+    url: "[]GEOSITE"
+    interval: tiktok
+  netflix:
+    type: http
+    behavior: classical
+    path: ./ruleset/netflix.yaml
+    url: "[]GEOSITE"
+    interval: netflix
+  disneyplus:
+    type: http
+    behavior: classical
+    path: ./ruleset/disneyplus.yaml
+    url: "[]GEOSITE"
+    interval: disney
+  hbo:
+    type: http
+    behavior: classical
+    path: ./ruleset/hbo.yaml
+    url: "[]GEOSITE"
+    interval: hbo
+  primevideo:
+    type: http
+    behavior: classical
+    path: ./ruleset/primevideo.yaml
+    url: "[]GEOSITE"
+    interval: primevideo
+  emby:
+    type: http
+    behavior: classical
+    path: ./ruleset/emby.yaml
+    url: "[]GEOSITE"
+    interval: emby
+  spotify:
+    type: http
+    behavior: classical
+    path: ./ruleset/spotify.yaml
+    url: "[]GEOSITE"
+    interval: spotify
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: gfw
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    interval: 28800
+  netflix:
+    type: http
+    behavior: classical
+    path: ./ruleset/netflix.yaml
+    url: "[]GEOIP"
+    interval: netflix,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: telegram,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: twitter,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: facebook,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]FINAL"
+    interval: 86400
+
+rules:
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,💬 即时通讯
+  - RULE-SET,,🌐 社交媒体
+  - RULE-SET,chatgpt,🤖 ChatGPT
+  - RULE-SET,copilot,🤖 Copilot
+  - RULE-SET,ai,🤖 AI服务
+  - RULE-SET,,🚀 测速工具
+  - RULE-SET,youtube,📹 YouTube
+  - RULE-SET,appletv,🎥 AppleTV+
+  - RULE-SET,,🍎 苹果服务
+  - RULE-SET,tiktok,🎶 TikTok
+  - RULE-SET,netflix,🎥 Netflix
+  - RULE-SET,disneyplus,🎥 DisneyPlus
+  - RULE-SET,hbo,🎥 HBO
+  - RULE-SET,primevideo,🎥 PrimeVideo
+  - RULE-SET,emby,🎥 Emby
+  - RULE-SET,spotify,🎻 Spotify
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🌸 红杏影视
+  - RULE-SET,netflix,🎥 Netflix
+  - RULE-SET,,💬 即时通讯
+  - RULE-SET,,🌐 社交媒体
+  - RULE-SET,,🌐 社交媒体
+  - RULE-SET,,🐟 漏网之鱼
+  - MATCH,DIRECT

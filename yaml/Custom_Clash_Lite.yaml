@@ -1,0 +1,231 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+
+proxies: []
+
+# 后续会追加 proxy-groups 和 rule-providers
+
+
+proxy-groups:
+  - name: "🚀 手动选择"
+    type: select
+  - name: "♻️ 自动选择"
+    type: url-test
+  - name: "📢 谷歌FCM"
+    type: select
+  - name: "🇬 谷歌服务"
+    type: select
+  - name: "🍎 苹果服务"
+    type: select
+  - name: "Ⓜ️ 微软服务"
+    type: select
+  - name: "🎮 游戏平台"
+    type: select
+  - name: "🎮 Steam"
+    type: select
+  - name: "🚀 测速工具"
+    type: select
+  - name: "🐟 漏网之鱼"
+    type: select
+  - name: "🇭🇰 香港节点"
+    type: url-test
+  - name: "🇺🇸 美国节点"
+    type: url-test
+  - name: "🇯🇵 日本节点"
+    type: url-test
+    proxies: ["^-"]
+  - name: "🇸🇬 新加坡节点"
+    type: url-test
+  - name: "🇼🇸 台湾节点"
+    type: url-test
+  - name: "🇰🇷 韩国节点"
+    type: url-test
+  - name: "🇨🇦 加拿大节点"
+    type: url-test
+  - name: "🇬🇧 英国节点"
+    type: url-test
+  - name: "🇫🇷 法国节点"
+    type: url-test
+  - name: "🇩🇪 德国节点"
+    type: url-test
+  - name: "🇳🇱 荷兰节点"
+    type: url-test
+  - name: "🇹🇷 土耳其节点"
+    type: url-test
+  - name: "🎯 全球直连"
+    type: select
+  - name: "🌐 其他地区"
+    type: url-test
+    proxies: ["^-"]
+  - name: "🌸 红杏影视"
+    type: url-test
+
+rule-providers:
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: private
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: private,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: google-cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-games@cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Steam_CDN.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-game-platforms-download
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-public-tracker
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: speedtest
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: apple
+  m:
+    type: http
+    behavior: classical
+    path: ./ruleset/m.yaml
+    url: "[]GEOSITE"
+    interval: microsoft
+  fcm:
+    type: http
+    behavior: classical
+    path: ./ruleset/fcm.yaml
+    url: "[]GEOSITE"
+    interval: googlefcm
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: google
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: gfw
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    interval: 28800
+  steam:
+    type: http
+    behavior: classical
+    path: ./ruleset/steam.yaml
+    url: "[]GEOSITE"
+    interval: steam
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: category-games
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: google,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: cn
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: cn,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]FINAL"
+    interval: 86400
+
+rules:
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🍎 苹果服务
+  - RULE-SET,m,Ⓜ️ 微软服务
+  - RULE-SET,fcm,📢 谷歌FCM
+  - RULE-SET,,🇬 谷歌服务
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🌸 红杏影视
+  - RULE-SET,steam,🎮 Steam
+  - RULE-SET,,🎮 游戏平台
+  - RULE-SET,,🇬 谷歌服务
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🎯 全球直连
+  - RULE-SET,,🐟 漏网之鱼
+  - MATCH,DIRECT

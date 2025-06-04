@@ -1,0 +1,75 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+
+proxies: []
+
+# 后续会追加 proxy-groups 和 rule-providers
+
+
+proxy-groups:
+  - name: "🚀 手动选择"
+    type: select
+  - name: "♻️ 自动选择"
+    type: url-test
+  - name: "🎯 全球直连"
+    type: select
+  - name: "🌸 红杏影视"
+    type: url-test
+
+rule-providers:
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOSITE"
+    interval: gfw
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    interval: 28800
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: telegram,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: facebook,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]GEOIP"
+    interval: twitter,no-resolve
+  :
+    type: http
+    behavior: classical
+    path: ./ruleset/.yaml
+    url: "[]FINAL"
+    interval: 86400
+
+rules:
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🌸 红杏影视
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🚀 手动选择
+  - RULE-SET,,🎯 全球直连
+  - MATCH,DIRECT
