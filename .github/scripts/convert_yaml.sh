@@ -43,7 +43,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 fi
                 echo "    proxies: [${proxies}]" >> "$yaml_file"
             elif [[ "$type" == "url-test" ]]; then
-                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`' | sed 's/^/(?i)/')
+                filter=$(echo "$line" | grep -oP '\`\(.*\)\`' | tr -d '\`\(\)' | sed 's/^/(?i)/')
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
                 tolerance=$(echo "$line" | grep -oP ',\d+$' | tr -d ',')
