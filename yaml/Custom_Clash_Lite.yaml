@@ -82,6 +82,7 @@ proxy-groups:
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
+    filter: (?i)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
@@ -248,84 +249,84 @@ proxy-groups:
   - name: 🇭🇰 香港节点
     type: url-test
     include-all: true
-    filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong|深港
+    filter: (?i)(港|HK|hk|Hong Kong|HongKong|hongkong|深港)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇺🇸 美国节点
     type: url-test
     include-all: true
-    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates
+    filter: (?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇯🇵 日本节点
     type: url-test
     include-all: true
-    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵
+    filter: (?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇸🇬 新加坡节点
     type: url-test
     include-all: true
-    filter: (?i)新加坡|坡|狮城|SG|Singapore
+    filter: (?i)(新加坡|坡|狮城|SG|Singapore)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇼🇸 台湾节点
     type: url-test
     include-all: true
-    filter: (?i)台|新北|彰化|TW|Taiwan
+    filter: (?i)(台|新北|彰化|TW|Taiwan)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇰🇷 韩国节点
     type: url-test
     include-all: true
-    filter: (?i)KR|Korea|KOR|首尔|韩|韓
+    filter: (?i)(KR|Korea|KOR|首尔|韩|韓)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇨🇦 加拿大节点
     type: url-test
     include-all: true
-    filter: (?i)加拿大|Canada|渥太华|温哥华|卡尔加里
+    filter: (?i)(加拿大|Canada|渥太华|温哥华|卡尔加里)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇬🇧 英国节点
     type: url-test
     include-all: true
-    filter: (?i)英国|Great Britain
+    filter: (?i)(英国|Great Britain)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇫🇷 法国节点
     type: url-test
     include-all: true
-    filter: (?i)法国|France|巴黎
+    filter: (?i)(法国|France|巴黎)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇩🇪 德国节点
     type: url-test
     include-all: true
-    filter: (?i)德国|Germany|柏林|法兰克福
+    filter: (?i)(德国|Germany|柏林|法兰克福)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇳🇱 荷兰节点
     type: url-test
     include-all: true
-    filter: (?i)荷兰|Netherlands|阿姆斯特丹
+    filter: (?i)(荷兰|Netherlands|阿姆斯特丹)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🇹🇷 土耳其节点
     type: url-test
     include-all: true
-    filter: (?i)土耳其|Turkey|Türkiye
+    filter: (?i)(土耳其|Turkey|Türkiye)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
@@ -336,14 +337,14 @@ proxy-groups:
   - name: 🌐 其他地区
     type: url-test
     include-all: true
-    exclude-filter: (?i)(^(?!.*(港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye
+    filter: (?i)(^(?!.*(港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye)).*)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
   - name: 🌸 红杏影视
     type: url-test
     include-all: true
-    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
+    filter: (?i)(红杏|红杏云|hongxingdl|hongxing|hongxingyun)
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
