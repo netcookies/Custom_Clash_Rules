@@ -45,6 +45,10 @@ jobs:
         run: |
           bash .github/scripts/customize.sh
 
+      - name: Run convert yaml script
+        run: |
+          bash .github/scripts/convert_yaml.sh
+
       - name: Commit and push changes
         run: |
           git add .
