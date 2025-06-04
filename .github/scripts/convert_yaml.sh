@@ -54,7 +54,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    include-all: true" >> "$yaml_file"
                 # 提取 () 中的正则内容
                 raw_filter=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`\(\)')
-                if [[ "$raw_filter" == ^?!.*\(* ]]; then
+                if [[ "$raw_filter" == ^\?\!\.\** ]]; then
                     # 否则为 exclude-filter
                     # 假设格式是 ^(?!.*(xxx|yyy|zzz)).*，提取中间部分
                     temp="${raw_filter#^\?!\.\*}"
