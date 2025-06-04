@@ -65,7 +65,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     exclude_filter="(?i)$exclude_pattern"
                     
                     # 输出
-                    echo "    exclude-filter: $exclude_filter"
+                    echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
                 else
                     [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
                 fi
