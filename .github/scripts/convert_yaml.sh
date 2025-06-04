@@ -55,14 +55,14 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "  - name: $name" >> "$yaml_file"
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
-                if [[ "$name" == "🌐 其他地区" ]]; then
-                    exclude_filter_step1=$(echo "$raw_filter" | sed 's/^`(//' | sed 's/)$//')
+                #if [[ "$name" == "🌐 其他地区" ]]; then
+                    #exclude_filter_step1=$(echo "$raw_filter" | sed 's/^`(//' | sed 's/)$//')
                     echo "testing:*******$exclude_filter_step1"
                     #exclude_filter=$(echo "$exclude_filter_step1" | grep -oP '\(\K[^)]*(?=\))' | sed 's/^/(?i)/')
                     #[[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
-                else
+                #else
                     [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
-                fi
+                #fi
                 echo "    url: $url" >> "$yaml_file"
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
                 echo "    tolerance: ${tolerance:-50}" >> "$yaml_file"
