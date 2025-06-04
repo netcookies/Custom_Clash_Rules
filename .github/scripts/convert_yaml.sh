@@ -52,17 +52,17 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "  - name: $name" >> "$yaml_file"
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
-                # 第一步：提取 () 中完整内容（含开头 ^(?!.* ... )）
-                raw_pattern=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`')
+                # 提取 () 中的正则内容
+                raw_filter=$(echo "$line" | grep -oP '\`\([^\`]*\)\`' | tr -d '\`')
                 
-                # 第二步：判断并提取 exclude 部分（去除前缀 ^(?!.*( 和后缀 )) .*）
-                if [[ "$raw_pattern" == ^'(?!)'* ]]; then
-                    # 用参数替换提取中间部分（避免 regex 崩溃）
-                    exclude_body="${raw_pattern#^\(\?!\.\*\(}"
-                    exclude_body="${exclude_body%%\)\)\.\*\)}"  # 适配尾部
+                # 判断是否为 exclude 模式（即以 ^(?!.* 开头，且中间是一个子括号）
+                if [[ "$raw_filter" =~ ^\^\(\?\!\.\*\((.*)\)\)\.\*\)\$? ]]; then
+                    # 提取中间的黑名单内容（Bash 捕获组不支持，改用手动去前后缀）
+                    temp="${raw_filter#^\(\?!\.\*\(}"
+                    exclude_body="${temp%%\)\)\.\*\)*}"  # 去除结尾
                     echo "    exclude-filter: (?i)$exclude_body" >> "$yaml_file"
                 else
-                    echo "    filter: (?i)$raw_pattern" >> "$yaml_file"
+                    echo "    filter: (?i)$raw_filter" >> "$yaml_file"
                 fi
                 echo "    url: $url" >> "$yaml_file"
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
