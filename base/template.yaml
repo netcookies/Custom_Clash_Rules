@@ -1,13 +1,61 @@
-port: 7890
-socks-port: 7891
+port: 7891
+socks-port: 7892
+mixed-port: 7890
+redir-port: 7893
+tproxy-port: 7894
 allow-lan: true
+bind-address: "*"
 mode: rule
 log-level: info
+external-controller: 0.0.0.0:9090
+find-process-mode: off
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+keep-alive-idle: 600
+keep-alive-interval: 15
+external-ui: ui
+external-ui-url: https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+geodata-mode: false
+geo-auto-update: true
+geo-update-interval: 24
+
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country-lite.mmdb
+  asn: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb
+
+tun:
+  stack: mixed
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: false
+  mtu: 9000
+  gso: true
+  gso-max-size: 65536
+  dns-hijack:
+    - any:53
+    - tcp://any:53
 
 dns:
+  listen: 0.0.0.0:1053
+  ipv6: false
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "GEOSITE:cn"
+  fake-ip-filter-mode: blacklist
+  use-system-hosts: true
+  use-hosts: true
+
+
+sniffer:
   enable: true
-  listen: 0.0.0.0:53
-  enhanced-mode: redir-host
-  nameserver:
-    - 223.5.5.5
-    - 114.114.114.114
+  force-dns-mapping: true
+  parse-pure-ip: true
+
+profile:
+  store-selected: true
+  store-fake-ip: true
