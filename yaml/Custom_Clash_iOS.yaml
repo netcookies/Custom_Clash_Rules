@@ -12,11 +12,6 @@ dns:
     - 223.5.5.5
     - 114.114.114.114
 
-proxies: []
-
-# 后续会追加 proxy-groups 和 rule-providers
-
-
 proxy-groups:
   - name: 🚀 手动选择
     type: select
