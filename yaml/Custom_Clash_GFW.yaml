@@ -1,4 +1,3 @@
----
 port: 7890
 socks-port: 7891
 allow-lan: true
@@ -19,27 +18,9 @@ proxies: []
 
 
 proxy-groups:
-  - name: 🚀 手动选择
-    type: select
-    proxies: [♻️ 自动选择]
-  - name: ♻️ 自动选择
-    type: url-test
-    include-all: true
-    url: https://cp.cloudflare.com/generate_204
-    interval: 300
-    tolerance: 50
-  - name: 🎯 全球直连
-    type: select
-    proxies: []
-  - name: 🌸 红杏影视
-    type: url-test
-    include-all: true
-    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
-    url: https://cp.cloudflare.com/generate_204
-    interval: 300
-    tolerance: 50
 
 rule-providers:
+
   hxmovie:
     type: http
     behavior: classical
@@ -49,7 +30,9 @@ rule-providers:
     format: text
 
 rules:
-  - GEOIP,telegram,🚀 手动选择,no-resolve
-  - GEOIP,facebook,🚀 手动选择,no-resolve
-  - GEOIP,twitter,🚀 手动选择,no-resolve
+- GEOSITE,gfw,🚀 手动选择
+- GEOIP,telegram,🚀 手动选择,no-resolve
+- GEOIP,facebook,🚀 手动选择,no-resolve
+- GEOIP,twitter,🚀 手动选择,no-resolve
   - MATCH,🎯 全球直连
+

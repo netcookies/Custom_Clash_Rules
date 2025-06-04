@@ -1,4 +1,3 @@
----
 port: 7890
 socks-port: 7891
 allow-lan: true
@@ -19,41 +18,20 @@ proxies: []
 
 
 proxy-groups:
-  - name: 🚀 手动选择
-    type: select
-    proxies: []
-  - name: 🍎 苹果服务
-    type: select
-    proxies: [🎯 全球直连]
-  - name: 🚀 测速工具
-    type: select
-    proxies: [🎯 全球直连]
-  - name: 🐟 漏网之鱼
-    type: select
-    proxies: [🎯 全球直连]
-  - name: 🎯 全球直连
-    type: select
-    proxies: []
-  - name: 🌸 红杏影视
-    type: url-test
-    include-all: true
-    filter: (?i)红杏|红杏云|hongxingdl|hongxing|hongxingyun
-    url: https://cp.cloudflare.com/generate_204
-    interval: 300
-    tolerance: 50
 
 rule-providers:
-  Custom_Direct:
+
+  custom_direct:
     type: http
     behavior: classical
-    path: ./ruleset/Custom_Direct.yaml
+    path: ./ruleset/custom_direct.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
     interval: 28800
     format: text
-  Custom_Proxy:
+  custom_proxy:
     type: http
     behavior: classical
-    path: ./ruleset/Custom_Proxy.yaml
+    path: ./ruleset/custom_proxy.yaml
     url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
     interval: 28800
     format: text
@@ -66,5 +44,10 @@ rule-providers:
     format: text
 
 rules:
-  - GEOIP,cn,🎯 全球直连,no-resolve
+- GEOSITE,google-cn,🎯 全球直连
+- GEOSITE,category-speedtest,🚀 测速工具
+- GEOSITE,apple,🍎 苹果服务
+- GEOSITE,cn,🎯 全球直连
+- GEOIP,cn,🎯 全球直连,no-resolve
   - MATCH,🐟 漏网之鱼
+
