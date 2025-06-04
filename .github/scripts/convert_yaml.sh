@@ -56,7 +56,8 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    type: url-test" >> "$yaml_file"
                 echo "    include-all: true" >> "$yaml_file"
                 if [[ "$name" == "🌐 其他地区" ]]; then
-                    exclude_filter=$(echo "$raw_filter" | sed -E 's/^\`\(\^\(\?!\.\*\((.*)\)\)\.\*\)\`$/\1/' | sed 's/^/(?i)/')
+                    exclude_filter_step1=$(echo "$raw_filter" | sed 's/^`(//' | sed 's/)$//')
+                    exclude_filter=$(echo "$exclude_filter_step1" | grep -oP '\(\K[^)]*(?=\))' | sed 's/^/(?i)/')
                     [[ -n "$exclude_filter" ]] && echo "    exclude-filter: $exclude_filter" >> "$yaml_file"
                 else
                     [[ -n "$filter" ]] && echo "    filter: $filter" >> "$yaml_file"
