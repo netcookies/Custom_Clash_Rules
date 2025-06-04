@@ -1,41 +1,70 @@
-rules:
-  - GEOSITE,gfw,🚀 手动选择
-  - GEOIP,telegram,no-resolve,🚀 手动选择
-  - GEOIP,facebook,no-resolve,🚀 手动选择
-  - GEOIP,twitter,no-resolve,🚀 手动选择
-  - MATCH,🎯 全球直连
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
 
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
 
-rule-providers:
-🌸 红杏影视:
-  type: http
-  behavior: classical
-  path: ./ruleset/🌸 红杏影视.yaml
-  url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
-  interval: 28800
-  format: text
+proxies: []
 
+# 后续会追加 proxy-groups 和 rule-providers
 
 
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    proxies: ['♻️ 自动选择', '.*']
+    proxies: [♻️ 自动选择,.*]
   - name: ♻️ 自动选择
     type: url-test
-    include-all: false
-    url: .*
-    interval: https://cp.cloudflare.com/generate_204`300
+    include-all: true
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
     tolerance: 50
-
   - name: 🎯 全球直连
     type: select
-    proxies: ['DIRECT']
+    proxies: [DIRECT]
   - name: 🌸 红杏影视
     type: url-test
-    include-all: false
-    url: (红杏|红杏云|hongxingdl|hongxing|hongxingyun)
-    interval: https://cp.cloudflare.com/generate_204`300
+    include-all: true
+    filter: (?i)(红杏|红杏云|hongxingdl|hongxing|hongxingyun)
+    url: https://cp.cloudflare.com/generate_204
+    interval: 300
     tolerance: 50
 
+rule-providers:
+  hxmovie:
+    type: http
+    behavior: classical
+    path: ./ruleset/hxmovie.yaml
+    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    interval: 28800
+    format: text
+  geoip:
+    type: http
+    behavior: classical
+    path: ./ruleset/geoip.yaml
+    url: "twitter"
+    interval: no-resolve
+    format: text
+  geosite:
+    type: http
+    behavior: classical
+    path: ./ruleset/geosite.yaml
+    url: "gfw"
+    interval: 28800
+    format: text
 
+rules:
+  - GEOSITE,gfw,🚀 手动选择
+  - hxmovie,🌸 红杏影视
+  - GEOIP,telegram,🚀 手动选择,no-resolve
+  - GEOIP,facebook,🚀 手动选择,no-resolve
+  - GEOIP,twitter,🚀 手动选择,no-resolve
+  - MATCH,🎯 全球直连
