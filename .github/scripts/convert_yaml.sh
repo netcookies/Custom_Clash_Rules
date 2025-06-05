@@ -60,7 +60,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     temp="${raw_filter#^\?!\.\*}"
                     exclude_body="${temp%%\.\*}"
                     echo "    exclude-filter: (?i)$exclude_body" >> "$yaml_file"
-                elif [[ "$raw_filter" == ".*" ]]; then
+                elif [[ "$raw_filter" == "" ]]; then
                     echo "Pass!"
                 else
                     # 多个用 `|` 分隔的关键词，且不含括号，判定为普通 filter
