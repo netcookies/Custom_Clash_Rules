@@ -43,12 +43,28 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
-    - "+.lan"
-    - "+.local"
-    - "GEOSITE:cn"
+    - +.lan
+    - +.local
+    - GEOSITE:cn
+    - GEOSITE:connectivity-check
+    - GEOSITE:private
   fake-ip-filter-mode: blacklist
   use-system-hosts: true
   use-hosts: true
+  default-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://doh.360.cn/dns-query
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://doh.360.cn/dns-query
 
 
 sniffer:
