@@ -20,8 +20,8 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
         [ -z "$ORIGINAL_LINE" ] && continue
         CLEANED_LINE=$(echo "$ORIGINAL_LINE" | sed 's|\[\]🌸 红杏影视`||g')
         UPDATED_LINE=$(echo "$CLEANED_LINE" | sed 's|^custom_proxy_group=🎥 Emby`select`|custom_proxy_group=🎥 Emby`select`[]🌸 红杏影视`|')
-        ESC_ORIGINAL=$(printf '%s\n' "$ORIGINAL_LINE" | sed 's|[&|]|\\&|g')
-        ESC_UPDATED=$(printf '%s\n' "$UPDATED_LINE" | sed 's|[&|]|\\&|g')
+        ESC_ORIGINAL=$(printf '%s\n' "$ORIGINAL_LINE" | sed 's|[][\/.^$*]|\\&|g')
+        ESC_UPDATED=$(printf '%s\n' "$UPDATED_LINE" | sed 's|[][\/.^$*]|\\&|g')
         sed -i "s|$ESC_ORIGINAL|$ESC_UPDATED|" "$file"
         echo "✨ 🎥 Emby 分组更新完成：🌸 红杏影视 已在首位"
     fi
@@ -41,8 +41,8 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
             if echo "$PREV_LINE" | grep -q 'ruleset=.*\[]GEOIP,cn,no-resolve'; then
                 echo "🔧 去除 no-resolve 标志"
                 FIXED_LINE=$(echo "$PREV_LINE" | sed 's|,no-resolve||')
-                ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's|[&|]|\\&|g')
-                ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's|[&|]|\\&|g')
+                ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's|[][\/.^$*]|\\&|g')
+                ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's|[][\/.^$*]|\\&|g')
                 sed -i "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
 
             elif [ "$GEOIP_LINE_NUM" -ne "$PREV_LINE_NUM" ]; then
