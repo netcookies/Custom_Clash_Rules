@@ -123,5 +123,4 @@ rules:
   - GEOSITE,category-speedtest,🚀 测速工具
   - GEOSITE,apple,🍎 苹果服务
   - GEOSITE,cn,🎯 全球直连
-  - GEOIP,cn,🎯 全球直连
   - MATCH,🐟 漏网之鱼

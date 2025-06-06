@@ -579,5 +579,4 @@ rules:
   - GEOIP,twitter,🌐 社交媒体,no-resolve
   - GEOIP,facebook,🌐 社交媒体,no-resolve
   - GEOIP,cn,🎯 全球直连
-  - GEOIP,cn,🎯 全球直连
   - MATCH,🐟 漏网之鱼
