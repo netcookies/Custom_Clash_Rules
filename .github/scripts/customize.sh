@@ -40,10 +40,13 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
 
             if echo "$PREV_LINE" | grep -q 'ruleset=.*\[]GEOIP,cn,no-resolve'; then
                 echo "🔧 去除 no-resolve 标志"
-
+                echo "fixed 行"
                 FIXED_LINE=$(echo "$PREV_LINE" | sed 's|,no-resolve||')
+                echo "esc org 行"
                 ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's/[&/\]/\\&/g')
+                echo "esc fixed 行"
                 ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's/[&/\]/\\&/g')
+                echo "最终行"
                 sed -i "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
 
             elif [ "$GEOIP_LINE_NUM" -ne "$PREV_LINE_NUM" ]; then
