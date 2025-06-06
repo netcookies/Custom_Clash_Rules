@@ -40,10 +40,14 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
 
             if echo "$PREV_LINE" | grep -q 'ruleset=.*\[]GEOIP,cn,no-resolve'; then
                 echo "🔧 去除 no-resolve 标志"
+
                 FIXED_LINE=$(echo "$PREV_LINE" | sed 's/,no-resolve//')
-                ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's/[&/\]/\\&/g')
-                ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's/[&/\]/\\&/g')
+
+                # ✅✅✅ 已修复此处 —— 改为使用 | 分隔符避免语法错误
+                ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's/[&|]/\\&/g')
+                ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's/[&|]/\\&/g')
                 sed -i "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
+
             elif [ "$GEOIP_LINE_NUM" -ne "$PREV_LINE_NUM" ]; then
                 echo "➕ 在漏网之鱼前插入无 no-resolve 的 GEOIP,cn"
                 sed -i "${MATCH_LINE_NUM}i ruleset=🎯 全球直连,[]GEOIP,cn" "$file"
