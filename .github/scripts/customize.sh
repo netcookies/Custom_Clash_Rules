@@ -8,6 +8,9 @@ echo "🔧 开始处理目录: $CFG_DIR"
 find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "📝 处理文件: $file"
 
+    sed -i '/^ruleset=🎯 全球直连,\[\]GEOIP,cn$/d' "$file"
+    echo "🧹 已删除无 no-resolve 的 GEOIP,cn 行"
+
     # === 插入红杏影视规则 ===
     RULE_LINE='ruleset=🌸 红杏影视,https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
     grep -Fq "$RULE_LINE" "$file" || sed -i "/^ruleset=🚀 手动选择.*$/a $RULE_LINE" "$file"
