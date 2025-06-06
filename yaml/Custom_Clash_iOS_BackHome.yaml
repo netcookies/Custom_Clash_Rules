@@ -124,4 +124,5 @@ rules:
   - RULE-SET,hxmovie,🌸 红杏影视
   - GEOSITE,google-cn,🎯 全球直连
   - GEOSITE,category-speedtest,🚀 测速工具
+  - GEOIP,cn,🎯 全球直连
   - MATCH,🐟 漏网之鱼

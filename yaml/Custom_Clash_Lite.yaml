@@ -399,5 +399,5 @@ rules:
   - GEOSITE,category-games,🎮 游戏平台
   - GEOIP,google,🇬 谷歌服务,no-resolve
   - GEOSITE,cn,🎯 全球直连
-  - GEOIP,cn,🎯 全球直连,no-resolve
+  - GEOIP,cn,🎯 全球直连
   - MATCH,🐟 漏网之鱼
