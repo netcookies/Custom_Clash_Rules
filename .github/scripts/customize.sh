@@ -8,6 +8,7 @@ echo "🔧 开始处理目录: $CFG_DIR"
 find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "📝 处理文件: $file"
 
+    # === 删除无 no-resolve 的 GEOIP,cn 行 ===
     sed -i '/^ruleset=🎯 全球直连,\[\]GEOIP,cn$/d' "$file"
     echo "🧹 已删除无 no-resolve 的 GEOIP,cn 行"
 
@@ -47,7 +48,6 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's|[][\/.^$*]|\\&|g')
                 ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's|[][\/.^$*]|\\&|g')
                 sed -i "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
-
             elif [ "$GEOIP_LINE_NUM" -ne "$PREV_LINE_NUM" ]; then
                 echo "➕ 在漏网之鱼前插入无 no-resolve 的 GEOIP,cn"
                 sed -i "${MATCH_LINE_NUM}i ruleset=🎯 全球直连,[]GEOIP,cn" "$file"
@@ -55,6 +55,23 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "✅ GEOIP,cn 已正确设置在漏网之鱼前，无需更改"
             fi
         fi
+    fi
+
+    # === 自动选择存在时处理 🌀 全部节点 ===
+    if grep -q '^custom_proxy_group=♻️ 自动选择`url-test`' "$file"; then
+        echo "🔄 检测到 ♻️ 自动选择，处理 🌀 全部节点"
+
+        # 1. 替换 custom_proxy_group 行末尾为 `.* 的为 `[]🌀 全部节点
+        sed -i -E 's/(^custom_proxy_group=.*)`\.\*$/\1`[]🌀 全部节点/' "$file"
+
+        # 2. 删除旧的 🌀 全部节点 分组行（防止重复）
+        sed -i '/^custom_proxy_group=🌀 全部节点/d' "$file"
+
+        # 3. 插入 🌀 全部节点 分组
+        ALL_PROXY_GROUP_LINE='custom_proxy_group=🌀 全部节点`select`.*'
+        sed -i "/^;设置分组标志位$/i $ALL_PROXY_GROUP_LINE" "$file"
+
+        echo "✨ 🌀 全部节点 分组插入 & 替换完成"
     fi
 
     echo "✅ 文件处理完成: $file"
