@@ -703,7 +703,6 @@ proxy-groups:
   - name: 🌀 全部节点
     type: select
     include-all: true
-    proxies:
 
 rule-providers:
   hxmovie:

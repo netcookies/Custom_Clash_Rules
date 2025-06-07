@@ -79,7 +79,6 @@ proxy-groups:
   - name: 🚀 手动选择
     type: select
     include-all: true
-    proxies:
   - name: 🍎 苹果服务
     type: select
     proxies:
