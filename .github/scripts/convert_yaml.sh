@@ -41,10 +41,13 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 if [[ "$line" =~ \.\*$ ]]; then
                     echo "    include-all: true" >> "$yaml_file"
                 fi
-                echo "    proxies:" >> "$yaml_file"
-                echo "$line_no_dotstar" | grep -oP '\[\][^`]*' | sed 's/^\[\]//g' | while read -r proxy; do
-                    echo "      - $proxy" >> "$yaml_file"
-                done
+                PROXY_LIST=$(echo "$line_no_dotstar" | grep -oP '\[\][^`]*' | sed 's/^\[\]//g')
+                if [ -n "$PROXY_LIST" ]; then
+                    echo "    proxies:" >> "$yaml_file"
+                    echo "$PROXY_LIST" | while read -r proxy; do
+                        echo "      - $proxy" >> "$yaml_file"
+                    done
+                fi
             elif [[ "$type" == "url-test" ]]; then
                 url=$(echo "$line" | grep -oP '\`https?://[^\`]+\`' | tr -d '\`')
                 interval=$(echo "$line" | grep -oP '\`\d+\`' | tr -d '\`' | head -1)
