@@ -62,7 +62,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                     # 假设格式是 ^?!.*xxx|yyy|zzz.*，提取中间部分
                     temp="${raw_filter#^\?!\.\*}"
                     exclude_body="${temp%%\.\*}"
-                    echo "    exclude-filter: (?i)$exclude_body" >> "$yaml_file"
+                    echo "    filter: \"^(?i)(?!.*($exclude_body)).*$\"" >> "$yaml_file"
                 elif [[ "$raw_filter" == "" ]]; then
                     echo "Pass!"
                 else
