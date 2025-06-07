@@ -78,7 +78,6 @@ profile:
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    include-all: true
     proxies:
       - ♻️ 自动选择
       - 🇭🇰 香港节点
@@ -94,6 +93,7 @@ proxy-groups:
       - 🇳🇱 荷兰节点
       - 🇹🇷 土耳其节点
       - 🌐 其他地区
+      - 🌀 全部节点
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
@@ -120,7 +120,6 @@ proxy-groups:
       - 🚀 手动选择
   - name: 🌐 社交媒体
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -137,6 +136,7 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🚀 GitHub
     type: select
     proxies:
@@ -158,7 +158,6 @@ proxy-groups:
       - 🎯 全球直连
   - name: 🤖 ChatGPT
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -175,9 +174,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🤖 Copilot
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -195,9 +194,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🤖 AI服务
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -214,9 +213,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎶 TikTok
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -234,9 +233,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 📹 YouTube
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -253,9 +252,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎥 Netflix
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -272,9 +271,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎥 DisneyPlus
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -291,9 +290,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎥 HBO
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -311,9 +310,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🎥 PrimeVideo
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -331,9 +330,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🎥 AppleTV+
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -351,9 +350,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🎥 Emby
     type: select
-    include-all: true
     proxies:
       - 🌸 红杏影视
       - 🇭🇰 香港节点
@@ -371,9 +370,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🎻 Spotify
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -390,6 +389,7 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 📺 Bahamut
     type: select
     proxies:
@@ -398,7 +398,6 @@ proxy-groups:
       - 🎯 全球直连
   - name: 🌎 国外媒体
     type: select
-    include-all: true
     proxies:
       - 🇸🇬 新加坡节点
       - 🇭🇰 香港节点
@@ -416,9 +415,9 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🛒 国外电商
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -436,6 +435,7 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 📢 谷歌FCM
     type: select
     proxies:
@@ -533,7 +533,6 @@ proxy-groups:
       - ♻️ 自动选择
   - name: 🎮 Steam
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -551,9 +550,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🚀 测速工具
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -571,9 +570,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🐟 漏网之鱼
     type: select
-    include-all: true
     proxies:
       - 🇭🇰 香港节点
       - 🇺🇸 美国节点
@@ -591,6 +590,7 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🇭🇰 香港节点
     type: url-test
     include-all: true
@@ -700,6 +700,10 @@ proxy-groups:
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
+  - name: 🌀 全部节点
+    type: select
+    include-all: true
+    proxies:
 
 rule-providers:
   hxmovie:

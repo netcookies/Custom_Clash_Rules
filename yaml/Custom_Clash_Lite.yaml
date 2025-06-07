@@ -78,7 +78,6 @@ profile:
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    include-all: true
     proxies:
       - ♻️ 自动选择
       - 🇭🇰 香港节点
@@ -94,6 +93,7 @@ proxy-groups:
       - 🇳🇱 荷兰节点
       - 🇹🇷 土耳其节点
       - 🌐 其他地区
+      - 🌀 全部节点
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
@@ -102,7 +102,6 @@ proxy-groups:
     tolerance: 50
   - name: 📢 谷歌FCM
     type: select
-    include-all: true
     proxies:
       - 🚀 手动选择
       - ♻️ 自动选择
@@ -120,9 +119,9 @@ proxy-groups:
       - 🇹🇷 土耳其节点
       - 🌐 其他地区
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🇬 谷歌服务
     type: select
-    include-all: true
     proxies:
       - 🚀 手动选择
       - ♻️ 自动选择
@@ -140,9 +139,9 @@ proxy-groups:
       - 🇹🇷 土耳其节点
       - 🌐 其他地区
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🍎 苹果服务
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -160,9 +159,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: Ⓜ️ 微软服务
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -180,9 +179,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎮 游戏平台
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -200,9 +199,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🎮 Steam
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -220,9 +219,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🚀 测速工具
     type: select
-    include-all: true
     proxies:
       - 🎯 全球直连
       - 🇭🇰 香港节点
@@ -240,9 +239,9 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: 🐟 漏网之鱼
     type: select
-    include-all: true
     proxies:
       - 🚀 手动选择
       - ♻️ 自动选择
@@ -260,6 +259,7 @@ proxy-groups:
       - 🇹🇷 土耳其节点
       - 🌐 其他地区
       - 🎯 全球直连
+      - 🌀 全部节点
   - name: 🇭🇰 香港节点
     type: url-test
     include-all: true
@@ -362,6 +362,10 @@ proxy-groups:
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
+  - name: 🌀 全部节点
+    type: select
+    include-all: true
+    proxies:
 
 rule-providers:
   hxmovie:

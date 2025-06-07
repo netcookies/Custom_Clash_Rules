@@ -78,9 +78,9 @@ profile:
 proxy-groups:
   - name: 🚀 手动选择
     type: select
-    include-all: true
     proxies:
       - ♻️ 自动选择
+      - 🌀 全部节点
   - name: ♻️ 自动选择
     type: url-test
     include-all: true
@@ -98,6 +98,10 @@ proxy-groups:
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
+  - name: 🌀 全部节点
+    type: select
+    include-all: true
+    proxies:
 
 rule-providers:
   hxmovie:
