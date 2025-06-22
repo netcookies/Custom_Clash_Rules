@@ -3,7 +3,7 @@ name: Watch Yaml Directory Changes
 on:
   push:
     paths:
-      - 'yaml/**/*.yaml'
+      - 'cfg/**/*.ini'
   workflow_dispatch:       # 允许手动触发
 
 jobs:
@@ -33,6 +33,6 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
-          git commit -m "Auto sync and customize" || echo "No changes to commit"
+          git commit -m "Auto customize when cfg directory changes" || echo "No changes to commit"
           git push origin main
 
