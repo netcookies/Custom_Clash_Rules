@@ -1,12 +1,13 @@
-name: Sync Upstream and Customize
+name: Watch Yaml Directory Changes
 
 on:
-  #schedule:
-  #  - cron: '0 */6 * * *'  # 每 6 小时执行一次
+  push:
+    paths:
+      - 'yaml/**/*.yaml'
   workflow_dispatch:       # 允许手动触发
 
 jobs:
-  sync:
+  run-custom-scripts::
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
@@ -20,26 +21,6 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-      - name: Add upstream and fetch
-        run: |
-          git remote add upstream https://github.com/Aethersailor/Custom_Clash_Rules.git
-          git fetch upstream
-
-      - name: Merge upstream/main with conflict auto-resolution
-        run: |
-          set +e
-          git merge upstream/main --allow-unrelated-histories
-          status=$?
-          if [ $status -ne 0 ]; then
-            echo "⚠️ 冲突发生，自动使用 upstream 版本解决"
-            for file in $(git diff --name-only --diff-filter=U); do
-              git checkout --theirs -- "$file"
-              git add "$file"
-            done
-            git commit -m "Auto-resolved merge conflicts using upstream version"
-          fi
-          set -e
 
       - name: Run customization script
         run: |
