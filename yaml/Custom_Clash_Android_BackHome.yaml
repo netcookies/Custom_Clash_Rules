@@ -123,14 +123,14 @@ rule-providers:
     type: http
     behavior: classical
     path: ./ruleset/custom_direct.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Direct.list"
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"
     interval: 28800
     format: text
   custom_proxy:
     type: http
     behavior: classical
     path: ./ruleset/custom_proxy.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Proxy.list"
+    url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"
     interval: 28800
     format: text
 
