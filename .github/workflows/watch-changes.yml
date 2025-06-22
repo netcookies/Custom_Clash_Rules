@@ -7,7 +7,7 @@ on:
   workflow_dispatch:       # 允许手动触发
 
 jobs:
-  run-custom-scripts::
+  run-custom-scripts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
