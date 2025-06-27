@@ -116,27 +116,28 @@ rule-providers:
     type: http
     behavior: classical
     path: ./ruleset/hxmovie.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
   custom_direct:
     type: http
     behavior: classical
     path: ./ruleset/custom_direct.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Direct.list"
+    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Direct.list"
     interval: 28800
     format: text
   custom_proxy:
     type: http
     behavior: classical
     path: ./ruleset/custom_proxy.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Proxy.list"
+    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Proxy.list"
     interval: 28800
     format: text
 
 rules:
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
+  - RULE-SET,hxmovie,🌸 红杏影视
   - RULE-SET,hxmovie,🌸 红杏影视
   - GEOSITE,cn,🎯 全球直连
   - GEOIP,cn,🎯 全球直连,no-resolve
