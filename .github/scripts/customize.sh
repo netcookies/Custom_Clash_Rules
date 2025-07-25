@@ -13,8 +13,19 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "🧹 已删除无 no-resolve 的 GEOIP,cn 行"
 
     # === 插入红杏影视规则 ===
-    RULE_LINE='ruleset=🌸 红杏影视,https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
-    grep -Fq "$RULE_LINE" "$file" || sed -i "/^ruleset=🚀 手动选择.*$/a $RULE_LINE" "$file"
+    RULE_LINE='ruleset=🌸 红杏影视,https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
+    # === 插入红杏影视规则（只插入最后一个 "ruleset=🚀 手动选择..." 后） ===
+    RULE_LINE='ruleset=🌸 红杏影视,https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
+    if ! grep -Fq "$RULE_LINE" "$file"; then
+        # 找出最后一个匹配行号
+        LAST_MATCH_LINE=$(grep -n '^ruleset=🚀 手动选择' "$file" | tail -n1 | cut -d: -f1)
+        if [ -n "$LAST_MATCH_LINE" ]; then
+            sed -i "${LAST_MATCH_LINE}a $RULE_LINE" "$file"
+            echo "➕ 已在最后一个 🚀 手动选择 后插入红杏影视规则"
+        else
+            echo "⚠️ 未找到 🚀 手动选择，未插入红杏影视规则"
+        fi
+    fi
 
     GROUP_LINE='custom_proxy_group=🌸 红杏影视`url-test`(红杏|红杏云|hongxingdl|hongxing|hongxingyun)`https://cp.cloudflare.com/generate_204`300,,50'
     grep -Fq "$GROUP_LINE" "$file" || sed -i "/^;设置分组标志位$/i $GROUP_LINE" "$file"
