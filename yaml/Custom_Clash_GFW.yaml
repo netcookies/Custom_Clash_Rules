@@ -107,18 +107,14 @@ rule-providers:
     type: http
     behavior: classical
     path: ./ruleset/hxmovie.yaml
-    url: "https://raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
+    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
 
 rules:
   - GEOSITE,gfw,🚀 手动选择
   - RULE-SET,hxmovie,🌸 红杏影视
-  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,telegram,🚀 手动选择,no-resolve
-  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,facebook,🚀 手动选择,no-resolve
-  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,twitter,🚀 手动选择,no-resolve
-  - RULE-SET,hxmovie,🌸 红杏影视
   - MATCH,🎯 全球直连

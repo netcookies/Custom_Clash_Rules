@@ -571,7 +571,6 @@ rules:
   - GEOIP,private,🎯 全球直连,no-resolve
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
-  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOSITE,cn,🎯 全球直连
   - GEOIP,cn,🎯 全球直连,no-resolve
   - GEOSITE,google-cn,🎯 全球直连
@@ -592,7 +591,6 @@ rules:
   - GEOSITE,emby,🎥 Emby
   - GEOSITE,spotify,🎻 Spotify
   - GEOSITE,gfw,🚀 手动选择
-  - RULE-SET,hxmovie,🌸 红杏影视
   - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,netflix,🎥 Netflix,no-resolve
   - GEOIP,telegram,💬 即时通讯,no-resolve
