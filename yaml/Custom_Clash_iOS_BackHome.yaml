@@ -136,7 +136,6 @@ rules:
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
   - RULE-SET,hxmovie,🌸 红杏影视
-  - RULE-SET,hxmovie,🌸 红杏影视
   - GEOSITE,google-cn,🎯 全球直连
   - GEOSITE,category-speedtest,🚀 测速工具
   - GEOIP,cn,🎯 全球直连
