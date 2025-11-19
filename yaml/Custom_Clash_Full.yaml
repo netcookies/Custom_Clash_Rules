@@ -156,6 +156,25 @@ proxy-groups:
       - 🚀 手动选择
       - ♻️ 自动选择
       - 🎯 全球直连
+  - name: 🍎 苹果智能
+    type: select
+    proxies:
+      - 🎯 全球直连
+      - 🇭🇰 香港节点
+      - 🇺🇸 美国节点
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇼🇸 台湾节点
+      - 🇰🇷 韩国节点
+      - 🇨🇦 加拿大节点
+      - 🇬🇧 英国节点
+      - 🇫🇷 法国节点
+      - 🇩🇪 德国节点
+      - 🇳🇱 荷兰节点
+      - 🇹🇷 土耳其节点
+      - 🌐 其他地区
+      - 🚀 手动选择
+      - ♻️ 自动选择
   - name: 🤖 ChatGPT
     type: select
     proxies:
@@ -493,25 +512,6 @@ proxy-groups:
       - 🌐 其他地区
       - 🚀 手动选择
       - ♻️ 自动选择
-  - name: 🍎 苹果智能
-    type: select
-    proxies:
-      - 🎯 全球直连
-      - 🇭🇰 香港节点
-      - 🇺🇸 美国节点
-      - 🇯🇵 日本节点
-      - 🇸🇬 新加坡节点
-      - 🇼🇸 台湾节点
-      - 🇰🇷 韩国节点
-      - 🇨🇦 加拿大节点
-      - 🇬🇧 英国节点
-      - 🇫🇷 法国节点
-      - 🇩🇪 德国节点
-      - 🇳🇱 荷兰节点
-      - 🇹🇷 土耳其节点
-      - 🌐 其他地区
-      - 🚀 手动选择
-      - ♻️ 自动选择
   - name: Ⓜ️ 微软服务
     type: select
     proxies:
@@ -774,6 +774,7 @@ rules:
   - GEOSITE,category-public-tracker,🎯 全球直连
   - GEOSITE,category-communication,💬 即时通讯
   - GEOSITE,category-social-media-!cn,🌐 社交媒体
+  - RULE-SET,appleai,🍎 苹果智能
   - GEOSITE,openai,🤖 ChatGPT
   - GEOSITE,bing,🤖 Copilot
   - GEOSITE,category-ai-!cn,🤖 AI服务
@@ -782,7 +783,6 @@ rules:
   - GEOSITE,youtube,📹 YouTube
   - GEOSITE,apple-tvplus,🎥 AppleTV+
   - GEOSITE,apple,🍎 苹果服务
-  - RULE-SET,appleai,🍎 苹果智能
   - GEOSITE,microsoft,Ⓜ️ 微软服务
   - GEOSITE,googlefcm,📢 谷歌FCM
   - GEOSITE,google,🇬 谷歌服务
