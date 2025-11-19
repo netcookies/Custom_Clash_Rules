@@ -551,6 +551,13 @@ rule-providers:
     url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
+  appleai:
+    type: http
+    behavior: classical
+    path: ./ruleset/appleai.yaml
+    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/AppleAI.list"
+    interval: 28800
+    format: text
   custom_direct:
     type: http
     behavior: classical
@@ -583,6 +590,7 @@ rules:
   - GEOSITE,youtube,📹 YouTube
   - GEOSITE,apple-tvplus,🎥 AppleTV+
   - GEOSITE,apple,🍎 苹果服务
+  - RULE-SET,appleai,🍎 苹果智能
   - GEOSITE,tiktok,🎶 TikTok
   - GEOSITE,netflix,🎥 Netflix
   - GEOSITE,disney,🎥 DisneyPlus
