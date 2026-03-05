@@ -3,4 +3,6 @@
 # REPO: https://github.com/netcookies/Custom_Clash_Rules
 # 用红杏云机场时看Emby用
 
-DOMAIN-SUFFIX,hongxingyunmovie.vip
+DOMAIN,hongxingyunmovie.vip
+DOMAIN,v1.uhdnow.com
+DOMAIN,global.uhdnow.com
