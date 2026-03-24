@@ -5,6 +5,9 @@ on:
   #  - cron: '0 */6 * * *'  # 每 6 小时执行一次
   workflow_dispatch:       # 允许手动触发
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -23,23 +26,16 @@ jobs:
 
       - name: Add upstream and fetch
         run: |
-          git remote add upstream https://github.com/Aethersailor/Custom_Clash_Rules.git
+          git remote add upstream https://github.com/Aethersailor/Custom_Clash_Rules.git 2>/dev/null || git remote set-url upstream https://github.com/Aethersailor/Custom_Clash_Rules.git
           git fetch upstream
 
-      - name: Merge upstream/main with conflict auto-resolution
+      - name: Merge upstream/main
         run: |
-          set +e
-          git merge upstream/main --allow-unrelated-histories
-          status=$?
-          if [ $status -ne 0 ]; then
-            echo "⚠️ 冲突发生，自动使用 upstream 版本解决"
-            for file in $(git diff --name-only --diff-filter=U); do
-              git checkout --theirs -- "$file"
-              git add "$file"
-            done
-            git commit -m "Auto-resolved merge conflicts using upstream version"
+          if ! git merge --no-edit upstream/main; then
+            echo "⚠️ 检测到合并冲突，请人工处理后再同步"
+            git merge --abort || true
+            exit 1
           fi
-          set -e
 
       - name: Run customization script
         run: |
@@ -49,9 +45,21 @@ jobs:
         run: |
           bash .github/scripts/convert_yaml.sh
 
+      - name: Validate generated files
+        run: |
+          bash -n .github/scripts/customize.sh
+          bash -n .github/scripts/convert_yaml.sh
+          for file in cfg/*.ini; do
+            yaml_file="yaml/$(basename "${file%.ini}").yaml"
+            test -f "$yaml_file"
+          done
+          if grep -RInE 'ghfast\.top|gh-proxy\.com' cfg yaml; then
+            echo "检测到旧代理域名残留"
+            exit 1
+          fi
+
       - name: Commit and push changes
         run: |
-          git add .
-          git commit -m "Auto sync and customize" || echo "No changes to commit"
-          git push origin main
-
+          git add cfg yaml
+          git diff --cached --quiet || git commit -m "chore: regenerate config artifacts [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

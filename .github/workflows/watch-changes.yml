@@ -4,10 +4,16 @@ on:
   push:
     paths:
       - 'cfg/**/*.ini'
+      - 'base/template.yaml'
+      - '.github/scripts/*.sh'
   workflow_dispatch:       # 允许手动触发
+
+permissions:
+  contents: write
 
 jobs:
   run-custom-scripts:
+    if: github.event_name == 'workflow_dispatch' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
@@ -30,9 +36,21 @@ jobs:
         run: |
           bash .github/scripts/convert_yaml.sh
 
+      - name: Validate generated files
+        run: |
+          bash -n .github/scripts/customize.sh
+          bash -n .github/scripts/convert_yaml.sh
+          for file in cfg/*.ini; do
+            yaml_file="yaml/$(basename "${file%.ini}").yaml"
+            test -f "$yaml_file"
+          done
+          if grep -RInE 'ghfast\.top|gh-proxy\.com' cfg yaml; then
+            echo "检测到旧代理域名残留"
+            exit 1
+          fi
+
       - name: Commit and push changes
         run: |
-          git add .
-          git commit -m "Auto customize when cfg directory changes" || echo "No changes to commit"
-          git push origin main
-
+          git add cfg yaml
+          git diff --cached --quiet || git commit -m "chore: regenerate config artifacts [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
