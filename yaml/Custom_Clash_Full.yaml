@@ -14,7 +14,7 @@ tcp-concurrent: true
 keep-alive-idle: 600
 keep-alive-interval: 15
 external-ui: ui
-external-ui-url: https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+external-ui-url: https://cdn.gh-proxy.org/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
 geodata-mode: false
 geo-auto-update: true
 geo-update-interval: 24
@@ -708,7 +708,7 @@ proxy-groups:
   - name: 🌐 其他地区
     type: url-test
     include-all: true
-    filter: "^(?i)(?!.*(港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye)).*$"
+    filter: (?i)^(?!.*(港|HK|hk|Hong Kong|HongKong|hongkong|深港|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|UnitedStates|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|🇯🇵|新加坡|坡|狮城|SG|Singapore|台|新北|彰化|TW|Taiwan|KR|Korea|KOR|首尔|韩|韓|加拿大|Canada|渥太华|温哥华|卡尔加里|英国|Great Britain|法国|France|巴黎|德国|Germany|柏林|法兰克福|荷兰|Netherlands|阿姆斯特丹|土耳其|Turkey|Türkiye)).*
     url: https://cp.cloudflare.com/generate_204
     interval: 300
     tolerance: 50
@@ -724,39 +724,39 @@ proxy-groups:
     include-all: true
 
 rule-providers:
-  hxmovie:
-    type: http
-    behavior: classical
-    path: ./ruleset/hxmovie.yaml
-    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
-    interval: 28800
-    format: text
-  appleai:
-    type: http
-    behavior: classical
-    path: ./ruleset/appleai.yaml
-    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/AppleAI.list"
-    interval: 28800
-    format: text
   custom_direct:
     type: http
     behavior: classical
     path: ./ruleset/custom_direct.yaml
-    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Direct.list"
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Direct.list"
     interval: 28800
     format: text
   custom_proxy:
     type: http
     behavior: classical
     path: ./ruleset/custom_proxy.yaml
-    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Proxy.list"
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Custom_Proxy.list"
     interval: 28800
     format: text
   steam_cdn:
     type: http
     behavior: classical
     path: ./ruleset/steam_cdn.yaml
-    url: "https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Steam_CDN.list"
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Steam_CDN.list"
+    interval: 28800
+    format: text
+  appleai:
+    type: http
+    behavior: classical
+    path: ./ruleset/appleai.yaml
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/AppleAI.list"
+    interval: 28800
+    format: text
+  hxmovie:
+    type: http
+    behavior: classical
+    path: ./ruleset/hxmovie.yaml
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list"
     interval: 28800
     format: text
 
