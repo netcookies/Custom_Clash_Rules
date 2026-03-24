@@ -3,30 +3,41 @@
 set -e
 
 CFG_DIR="./cfg"
+HXMOVIE_RULE='ruleset=🌸 红杏影视,https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
+
+sedi() {
+    if sed --version >/dev/null 2>&1; then
+        sed -i "$@"
+    else
+        sed -i '' "$@"
+    fi
+}
+
 echo "🔧 开始处理目录: $CFG_DIR"
 
 find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "📝 处理文件: $file"
 
     # === 删除无 no-resolve 的 GEOIP,cn 行 ===
-    sed -i '/^ruleset=🎯 全球直连,\[\]GEOIP,cn$/d' "$file"
+    sedi '/^ruleset=🎯 全球直连,\[\]GEOIP,cn$/d' "$file"
     echo "🧹 已删除无 no-resolve 的 GEOIP,cn 行"
 
-    # === 插入红杏影视规则（只插入最后一个 "ruleset=🚀 手动选择..." 后） ===
-    RULE_LINE='ruleset=🌸 红杏影视,https://gh-proxy.com/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
-    if ! grep -Fq "$RULE_LINE" "$file"; then
-        # 找出最后一个匹配行号
-        LAST_MATCH_LINE=$(grep -n '^ruleset=🚀 手动选择' "$file" | tail -n1 | cut -d: -f1)
-        if [ -n "$LAST_MATCH_LINE" ]; then
-            sed -i "${LAST_MATCH_LINE}a $RULE_LINE" "$file"
-            echo "➕ 已在最后一个 🚀 手动选择 后插入红杏影视规则"
-        else
-            echo "⚠️ 未找到 🚀 手动选择，未插入红杏影视规则"
-        fi
+    # === 统一红杏影视规则 URL，并保持只存在一条 ===
+    sedi '/^ruleset=🌸 红杏影视,/d' "$file"
+    LAST_MATCH_LINE=$(grep -n '^ruleset=🚀 手动选择' "$file" | tail -n1 | cut -d: -f1)
+    if [ -n "$LAST_MATCH_LINE" ]; then
+        sedi "${LAST_MATCH_LINE}a\\
+$HXMOVIE_RULE
+" "$file"
+        echo "➕ 已在最后一个 🚀 手动选择 后插入红杏影视规则"
+    else
+        echo "⚠️ 未找到 🚀 手动选择，未插入红杏影视规则"
     fi
 
     GROUP_LINE='custom_proxy_group=🌸 红杏影视`url-test`(红杏|红杏云|hongxingdl|hongxing|hongxingyun)`https://cp.cloudflare.com/generate_204`300,,50'
-    grep -Fq "$GROUP_LINE" "$file" || sed -i "/^;设置分组标志位$/i $GROUP_LINE" "$file"
+    grep -Fq "$GROUP_LINE" "$file" || sedi "/^;设置分组标志位$/i\\
+$GROUP_LINE
+" "$file"
 
     if grep -q '^custom_proxy_group=🎥 Emby`select`' "$file"; then
         ORIGINAL_LINE=$(grep '^custom_proxy_group=🎥 Emby`select`' "$file")
@@ -35,7 +46,7 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
         UPDATED_LINE=$(echo "$CLEANED_LINE" | sed 's|^custom_proxy_group=🎥 Emby`select`|custom_proxy_group=🎥 Emby`select`[]🌸 红杏影视`|')
         ESC_ORIGINAL=$(printf '%s\n' "$ORIGINAL_LINE" | sed 's|[][\/.^$*]|\\&|g')
         ESC_UPDATED=$(printf '%s\n' "$UPDATED_LINE" | sed 's|[][\/.^$*]|\\&|g')
-        sed -i "s|$ESC_ORIGINAL|$ESC_UPDATED|" "$file"
+        sedi "s|$ESC_ORIGINAL|$ESC_UPDATED|" "$file"
         echo "✨ 🎥 Emby 分组更新完成：🌸 红杏影视 已在首位"
     fi
 
@@ -56,10 +67,12 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 FIXED_LINE=$(echo "$PREV_LINE" | sed 's|,no-resolve||')
                 ESC_ORIGINAL=$(printf '%s\n' "$PREV_LINE" | sed 's|[][\/.^$*]|\\&|g')
                 ESC_FIXED=$(printf '%s\n' "$FIXED_LINE" | sed 's|[][\/.^$*]|\\&|g')
-                sed -i "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
+                sedi "s|$ESC_ORIGINAL|$ESC_FIXED|" "$file"
             elif [ "$GEOIP_LINE_NUM" -ne "$PREV_LINE_NUM" ]; then
                 echo "➕ 在漏网之鱼前插入无 no-resolve 的 GEOIP,cn"
-                sed -i "${MATCH_LINE_NUM}i ruleset=🎯 全球直连,[]GEOIP,cn" "$file"
+                sedi "${MATCH_LINE_NUM}i\\
+ruleset=🎯 全球直连,[]GEOIP,cn
+" "$file"
             else
                 echo "✅ GEOIP,cn 已正确设置在漏网之鱼前，无需更改"
             fi
@@ -71,14 +84,16 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
         echo "🔄 检测到 ♻️ 自动选择，处理 🌀 全部节点"
 
         # 1. 替换 custom_proxy_group 行末尾为 `.* 的为 `[]🌀 全部节点
-        sed -i -E 's/(^custom_proxy_group=.*)`\.\*$/\1`[]🌀 全部节点/' "$file"
+        sedi -E 's/(^custom_proxy_group=.*)`\.\*$/\1`[]🌀 全部节点/' "$file"
 
         # 2. 删除旧的 🌀 全部节点 分组行（防止重复）
-        sed -i '/^custom_proxy_group=🌀 全部节点/d' "$file"
+        sedi '/^custom_proxy_group=🌀 全部节点/d' "$file"
 
         # 3. 插入 🌀 全部节点 分组
         ALL_PROXY_GROUP_LINE='custom_proxy_group=🌀 全部节点`select`.*'
-        sed -i "/^;设置分组标志位$/i $ALL_PROXY_GROUP_LINE" "$file"
+        sedi "/^;设置分组标志位$/i\\
+$ALL_PROXY_GROUP_LINE
+" "$file"
 
         echo "✨ 🌀 全部节点 分组插入 & 替换完成"
     fi
