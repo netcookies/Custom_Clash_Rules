@@ -4,4 +4,4 @@
 # 此list里的保持永远direct
 
 DOMAIN-SUFFIX,wenxijs.com
-SRC-IP-CIDR,172.30.0.10/32
+SRC-IP-CIDR,172.30.0.1/24
