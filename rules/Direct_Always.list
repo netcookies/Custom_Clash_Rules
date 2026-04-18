@@ -1,6 +1,7 @@
-# NAME: Hong Xing Movie vip
+# NAME: Direct Always
 # AUTHOR: netcookies
 # REPO: https://github.com/netcookies/Custom_Clash_Rules
-# 用红杏云机场时看Emby用
+# 此list里的保持永远direct
 
 DOMAIN-SUFFIX,wenxijs.com
+SRC-IP-CIDR,172.30.0.10/32
