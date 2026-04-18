@@ -103,6 +103,13 @@ proxy-groups:
     include-all: true
 
 rule-providers:
+  direct_always:
+    type: http
+    behavior: classical
+    path: ./ruleset/direct_always.yaml
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Direct_Always.list"
+    interval: 28800
+    format: text
   hxmovie:
     type: http
     behavior: classical
@@ -112,6 +119,7 @@ rule-providers:
     format: text
 
 rules:
+  - RULE-SET,direct_always,🎯 全球直连
   - GEOSITE,gfw,🚀 手动选择
   - GEOIP,telegram,🚀 手动选择,no-resolve
   - GEOIP,facebook,🚀 手动选择,no-resolve

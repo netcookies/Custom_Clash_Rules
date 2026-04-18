@@ -112,6 +112,13 @@ proxy-groups:
     tolerance: 50
 
 rule-providers:
+  direct_always:
+    type: http
+    behavior: classical
+    path: ./ruleset/direct_always.yaml
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Direct_Always.list"
+    interval: 28800
+    format: text
   custom_direct:
     type: http
     behavior: classical
@@ -135,6 +142,7 @@ rule-providers:
     format: text
 
 rules:
+  - RULE-SET,direct_always,🎯 全球直连
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
   - RULE-SET,hxmovie,🌸 红杏影视
