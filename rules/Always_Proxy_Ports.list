@@ -1,0 +1,7 @@
+# NAME: Always Proxy Ports
+# AUTHOR: netcookies
+# REPO: https://github.com/netcookies/Custom_Clash_Rules
+# 此 list 里的入站端口固定走代理，建议使用手动选择
+
+IN-PORT,8080
+IN-PORT,1080
