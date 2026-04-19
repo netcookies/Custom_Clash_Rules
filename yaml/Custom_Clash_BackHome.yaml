@@ -107,6 +107,13 @@ proxy-groups:
     tolerance: 50
 
 rule-providers:
+  always_proxy_ports:
+    type: http
+    behavior: classical
+    path: ./ruleset/always_proxy_ports.yaml
+    url: "https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/Always_Proxy_Ports.list"
+    interval: 28800
+    format: text
   direct_always:
     type: http
     behavior: classical
@@ -137,6 +144,7 @@ rule-providers:
     format: text
 
 rules:
+  - RULE-SET,always_proxy_ports,🚀 手动选择
   - RULE-SET,direct_always,🎯 全球直连
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
