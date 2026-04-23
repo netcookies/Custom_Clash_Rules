@@ -4,6 +4,7 @@ set -e
 
 CFG_DIR="./cfg"
 HXMOVIE_RULE='ruleset=🌸 红杏影视,https://hk.gh-proxy.org/raw.githubusercontent.com/netcookies/Custom_Clash_Rules/main/rules/hxmovie.list,28800'
+SKIP_CUSTOMIZE_MARKER='; skip_customize=true'
 
 sedi() {
     if sed --version >/dev/null 2>&1; then
@@ -17,6 +18,11 @@ echo "🔧 开始处理目录: $CFG_DIR"
 
 find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     echo "📝 处理文件: $file"
+
+    if grep -Fq "$SKIP_CUSTOMIZE_MARKER" "$file"; then
+        echo "⏭️ 检测到 skip_customize 标记，跳过自定义处理"
+        continue
+    fi
 
     # === 删除无 no-resolve 的 GEOIP,cn 行 ===
     sedi '/^ruleset=🎯 全球直连,\[\]GEOIP,cn$/d' "$file"
