@@ -79,6 +79,12 @@ proxy-groups:
   - name: 🚀 手动选择
     type: select
     include-all: true
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
 
 rules:
+  - GEOSITE,private,🎯 全球直连
+  - GEOIP,private,🎯 全球直连,no-resolve
   - MATCH,🚀 手动选择
