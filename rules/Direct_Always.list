@@ -4,4 +4,6 @@
 # 此list里的保持永远direct
 
 DOMAIN-SUFFIX,wenxijs.com
+DOMAIN-SUFFIX,gh-proxy.org
+DOMAIN-SUFFIX,smart.uhdnow.com
 SRC-IP-CIDR,172.30.0.0/24
