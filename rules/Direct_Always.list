@@ -7,3 +7,12 @@ DOMAIN-SUFFIX,wenxijs.com
 DOMAIN-SUFFIX,gh-proxy.org
 DOMAIN-SUFFIX,smart.uhdnow.com
 SRC-IP-CIDR,172.30.0.0/24
+# 内网 IP 段直连
+IP-CIDR,192.168.0.0/16
+IP-CIDR,10.0.0.0/8
+IP-CIDR,172.16.0.0/12
+IP-CIDR,127.0.0.0/8
+IP-CIDR,169.254.0.0/16
+# 常见内网域名/局域网设备直连（按需增减）
+DOMAIN-SUFFIX,local
+DOMAIN-SUFFIX,lan
