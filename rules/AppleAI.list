@@ -1,3 +1,4 @@
+# 已弃用，新的用 https://github.com/Kianuni/AppleFlow
 DOMAIN-SUFFIX,smoot.apple.com                           # 搜索服务：Siri/Spotlight/Lookup/Safari/News/信息/音乐（TCP 443）
 DOMAIN,guzzoni.apple.com                         # Siri 与听写（TCP 443）
 DOMAIN,apple-relay.fastly-edge.com               # Apple Intelligence Extensions（TCP/UDP 443）
