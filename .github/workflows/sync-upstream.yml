@@ -53,6 +53,8 @@ jobs:
             yaml_file="yaml/$(basename "${file%.ini}").yaml"
             test -f "$yaml_file"
           done
+          ruby -c .github/scripts/validate_yaml.rb
+          ruby .github/scripts/validate_yaml.rb
           if grep -RInE 'ghfast\.top|gh-proxy\.com' cfg yaml; then
             echo "检测到旧代理域名残留"
             exit 1

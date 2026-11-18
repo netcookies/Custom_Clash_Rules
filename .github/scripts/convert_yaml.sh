@@ -6,6 +6,11 @@ CFG_DIR="./cfg"
 YAML_DIR="./yaml"
 TEMPLATE="./base/template.yaml"
 
+# .ini 额外支持：
+# rule-provider=key,behavior,format,url,interval
+# 用于显式声明 rule-provider，尤其是 Stash 需要的 behavior: domain + format: text
+# 对应的 ruleset 写法为：ruleset=分组名,[]RULE-SET,key
+
 upsert_rule_provider() {
     local key="$1"
     local block="$2"
@@ -91,6 +96,47 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
                 echo "    interval: ${interval:-300}" >> "$yaml_file"
                 echo "    tolerance: ${tolerance:-50}" >> "$yaml_file"
             fi
+
+        # 处理显式 rule-provider（用于 Stash 的 behavior: domain 等非 classical 规则集）
+        elif [[ "$line" =~ ^rule-provider= ]]; then
+            rest=${line#rule-provider=}
+            IFS=',' read -r key behavior format url interval <<< "$rest"
+
+            if [[ -z "$key" || -z "$url" ]]; then
+                echo "❌ 无效的 rule-provider 行: $line" >&2
+                exit 1
+            fi
+
+            behavior=${behavior:-classical}
+            format=${format:-text}
+            interval=${interval:-28800}
+
+            case "$behavior" in
+                domain|ipcidr|classical) ;;
+                *)
+                    echo "❌ rule-provider $key 的 behavior 不支持: $behavior" >&2
+                    exit 1
+                    ;;
+            esac
+
+            case "$format" in
+                yaml|text) ;;
+                *)
+                    echo "❌ rule-provider $key 的 format 不支持: $format" >&2
+                    exit 1
+                    ;;
+            esac
+
+            upsert_rule_provider "$key" "$(cat <<EOF
+  $key:
+    type: http
+    behavior: $behavior
+    path: ./ruleset/$key.yaml
+    url: "$url"
+    interval: $interval
+    format: $format
+EOF
+)"
 
         # 处理 ruleset
         elif [[ "$line" =~ ^ruleset= ]]; then
