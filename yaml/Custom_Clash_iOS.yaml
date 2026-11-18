@@ -49,6 +49,25 @@ dns:
     - GEOSITE:cn
     - GEOSITE:connectivity-check
     - GEOSITE:private
+    # AppleFlow：Siri、PCC 与推送相关域名使用真实 IP
+    - guzzoni.apple.com
+    - +.guzzoni.apple.com
+    - +.siri.apple.com
+    - dejavu.apple.com
+    - sequoia.apple.com
+    - +.smoot.apple.com
+    - +.push.apple.com
+    - gspe1-ssl.ls.apple.com
+    - +.issuer.apple.com
+    - +.ropes.apple.com
+    - mask-api.icloud.com
+    - mask.icloud.com
+    - mask-h2.icloud.com
+    - +.app.apple.com
+    - +.apple-relay.apple.com
+    - +.apple-relay.cloudflare.com
+    - +.apple-relay.fastly-edge.com
+    - +.apple-relay.akamaized.net
   fake-ip-filter-mode: blacklist
   use-system-hosts: true
   use-hosts: true
@@ -381,6 +400,11 @@ proxy-groups:
       - ♻️ 自动选择
       - 🎯 全球直连
       - 🌀 全部节点
+  - name: 🍎 Apple 智能
+    type: select
+    proxies:
+      - 🇺🇸 美国节点
+      - 🌀 全部节点
   - name: 🍎 苹果服务
     type: select
     proxies:
@@ -554,6 +578,20 @@ proxy-groups:
     include-all: true
 
 rule-providers:
+  appleflow-siri-direct:
+    type: http
+    behavior: classical
+    path: ./ruleset/appleflow-siri-direct.yaml
+    url: "https://raw.githubusercontent.com/Kianuni/AppleFlow/main/rules/clash/Siri-Direct.yaml"
+    interval: 86400
+    format: yaml
+  appleflow-pcc:
+    type: http
+    behavior: classical
+    path: ./ruleset/appleflow-pcc.yaml
+    url: "https://raw.githubusercontent.com/Kianuni/AppleFlow/main/rules/clash/Apple-PCC.yaml"
+    interval: 86400
+    format: yaml
   always_proxy_ports:
     type: http
     behavior: classical
@@ -597,6 +635,8 @@ rules:
   - GEOIP,private,🎯 全球直连,no-resolve
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
+  - RULE-SET,appleflow-siri-direct,DIRECT
+  - RULE-SET,appleflow-pcc,🍎 Apple 智能
   - GEOSITE,cn,🎯 全球直连
   - GEOIP,cn,🎯 全球直连,no-resolve
   - GEOSITE,google-cn,🎯 全球直连

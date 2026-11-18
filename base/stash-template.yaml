@@ -41,6 +41,25 @@ dns:
     - 'rule-set:cn'
     - 'rule-set:connectivity-check'
     - 'rule-set:private'
+    # AppleFlow：Siri、PCC 与推送相关域名使用真实 IP
+    - guzzoni.apple.com
+    - +.guzzoni.apple.com
+    - +.siri.apple.com
+    - dejavu.apple.com
+    - sequoia.apple.com
+    - +.smoot.apple.com
+    - +.push.apple.com
+    - gspe1-ssl.ls.apple.com
+    - +.issuer.apple.com
+    - +.ropes.apple.com
+    - mask-api.icloud.com
+    - mask.icloud.com
+    - mask-h2.icloud.com
+    - +.app.apple.com
+    - +.apple-relay.apple.com
+    - +.apple-relay.cloudflare.com
+    - +.apple-relay.fastly-edge.com
+    - +.apple-relay.akamaized.net
   fake-ip-filter-mode: blacklist
   use-system-hosts: true
   use-hosts: true
