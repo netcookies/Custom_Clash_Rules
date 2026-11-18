@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'cfg/**/*.ini'
-      - 'base/template.yaml'
+      - 'base/*.yaml'
       - '.github/scripts/*.sh'
       - '.github/scripts/*.rb'
   workflow_dispatch:       # 允许手动触发

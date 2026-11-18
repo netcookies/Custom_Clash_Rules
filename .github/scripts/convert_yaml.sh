@@ -37,7 +37,11 @@ find "$CFG_DIR" -type f -name "*.ini" | while read -r file; do
     yaml_file="$YAML_DIR/$filename.yaml"
 
     # 复制基础模板到新yaml文件
-    cp "$TEMPLATE" "$yaml_file"
+    template="$TEMPLATE"
+    if [[ "$filename" == Custom_Stash_* ]]; then
+        template="./base/stash-template.yaml"
+    fi
+    cp "$template" "$yaml_file"
 
     # 清理临时变量
     unset rules

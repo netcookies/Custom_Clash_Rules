@@ -6,8 +6,8 @@
 # - RULE-SET 引用的 rule-provider 存在；
 # - rule-provider 字段完整、behavior/format 合法；
 # - 每个配置以 MATCH 规则结尾；
-# - Custom_Stash_Full 必须使用 domain 类型的 gfw/google-cn/category-games-cn
-#   provider，不能残留对应的 GEOSITE 规则。
+# - Custom_Stash_Full 全部域名规则必须使用 RULE-SET，不能残留 GEOSITE；
+#   fake-ip-filter 也不能使用 geosite:，必须使用 rule-set:。
 
 require 'yaml'
 
@@ -64,6 +64,11 @@ yaml_files.each do |path|
     unless %w[yaml text].include?(format)
       errors << "#{path}: rule-provider #{name} 的 format 非法: #{format}"
     end
+
+    if provider['url'].to_s.include?('/geo/geosite/')
+      errors << "#{path}: geosite provider #{name} 的 behavior 必须是 domain" unless behavior == 'domain'
+      errors << "#{path}: geosite provider #{name} 的 format 必须是 text" unless format == 'text'
+    end
   end
 
   errors << "#{path}: rules 为空" if rules.empty?
@@ -86,7 +91,45 @@ yaml_files.each do |path|
   end
 end
 
-# Stash 专用配置的额外断言
+# 所有 Stash 专用配置的通用断言
+stash_paths = Dir.glob('yaml/Custom_Stash_*.yaml').sort
+errors << 'yaml/Custom_Stash_*.yaml: 文件不存在' if stash_paths.empty?
+
+stash_paths.each do |stash_path|
+  begin
+    stash = load_yaml(stash_path)
+  rescue StandardError => e
+    errors << "#{stash_path}: YAML 解析失败: #{e.message}"
+    next
+  end
+
+  providers = stash['rule-providers'] || {}
+  rules = stash['rules'] || []
+
+  rules.each do |rule|
+    next unless rule.is_a?(String)
+    errors << "#{stash_path}: 不应残留 GEOSITE 规则 #{rule}" if rule.start_with?('GEOSITE,')
+  end
+
+  fake_ip_filter = stash.dig('dns', 'fake-ip-filter') || []
+  unless fake_ip_filter.is_a?(Array)
+    errors << "#{stash_path}: dns.fake-ip-filter 不是数组"
+    fake_ip_filter = []
+  end
+
+  fake_ip_filter.each do |entry|
+    next unless entry.is_a?(String)
+    errors << "#{stash_path}: fake-ip-filter 不应使用 #{entry}" if entry.downcase.start_with?('geosite:')
+  end
+
+  fake_ip_filter.each do |entry|
+    next unless entry.is_a?(String) && entry.start_with?('rule-set:')
+    provider_name = entry.delete_prefix('rule-set:')
+    errors << "#{stash_path}: fake-ip-filter 引用了不存在的 provider #{provider_name}" unless providers.key?(provider_name)
+  end
+end
+
+# Full 模板的关键 provider / 规则断言
 stash_path = 'yaml/Custom_Stash_Full.yaml'
 if File.exist?(stash_path)
   begin
@@ -123,12 +166,17 @@ if File.exist?(stash_path)
       errors << "#{stash_path}: 缺少规则 #{rule}" unless rules.include?(rule)
     end
 
-    forbidden_prefixes = ['GEOSITE,gfw', 'GEOSITE,google-cn', 'GEOSITE,category-games@cn']
-    rules.each do |rule|
-      next unless rule.is_a?(String)
-      forbidden_prefixes.each do |prefix|
-        errors << "#{stash_path}: 不应残留规则 #{rule}" if rule.start_with?("#{prefix},")
-      end
+    geosite_providers = providers.count { |_, provider| provider['url'].to_s.include?('/geo/geosite/') }
+    errors << "#{stash_path}: geosite provider 数量异常: #{geosite_providers}" if geosite_providers < 30
+
+    fake_ip_filter = stash.dig('dns', 'fake-ip-filter') || []
+    unless fake_ip_filter.is_a?(Array)
+      errors << "#{stash_path}: dns.fake-ip-filter 不是数组"
+      fake_ip_filter = []
+    end
+
+    %w[rule-set:cn rule-set:connectivity-check rule-set:private].each do |entry|
+      errors << "#{stash_path}: fake-ip-filter 缺少 #{entry}" unless fake_ip_filter.include?(entry)
     end
   rescue StandardError => e
     errors << "#{stash_path}: YAML 解析失败: #{e.message}"

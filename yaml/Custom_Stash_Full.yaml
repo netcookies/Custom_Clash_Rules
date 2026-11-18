@@ -15,15 +15,6 @@ keep-alive-idle: 600
 keep-alive-interval: 15
 external-ui: ui
 external-ui-url: https://cdn.gh-proxy.org/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
-geodata-mode: false
-geo-auto-update: true
-geo-update-interval: 24
-
-geox-url:
-  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
-  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
-  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country-lite.mmdb
-  asn: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb
 
 tun:
   stack: mixed
@@ -43,12 +34,13 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
+    # rule-set: 需要 Stash iOS/tvOS 3.6+ / macOS 4.3+
     - derp.nznd.org
     - +.lan
     - +.local
-    - GEOSITE:cn
-    - GEOSITE:connectivity-check
-    - GEOSITE:private
+    - 'rule-set:cn'
+    - 'rule-set:connectivity-check'
+    - 'rule-set:private'
   fake-ip-filter-mode: blacklist
   use-system-hosts: true
   use-hosts: true
@@ -715,11 +707,18 @@ proxy-groups:
     include-all: true
 
 rule-providers:
-  gfw:
+  private:
     type: http
     behavior: domain
-    path: ./ruleset/gfw.yaml
-    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.list"
+    path: ./ruleset/private.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.list"
+    interval: 86400
+    format: text
+  cn:
+    type: http
+    behavior: domain
+    path: ./ruleset/cn.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.list"
     interval: 86400
     format: text
   google-cn:
@@ -734,6 +733,209 @@ rule-providers:
     behavior: domain
     path: ./ruleset/category-games-cn.yaml
     url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games@cn.list"
+    interval: 86400
+    format: text
+  category-game-platforms-download:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-game-platforms-download.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-game-platforms-download.list"
+    interval: 86400
+    format: text
+  category-public-tracker:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-public-tracker.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-public-tracker.list"
+    interval: 86400
+    format: text
+  category-communication:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-communication.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.list"
+    interval: 86400
+    format: text
+  category-social-media-not-cn:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-social-media-not-cn.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-social-media-!cn.list"
+    interval: 86400
+    format: text
+  openai:
+    type: http
+    behavior: domain
+    path: ./ruleset/openai.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/openai.list"
+    interval: 86400
+    format: text
+  bing:
+    type: http
+    behavior: domain
+    path: ./ruleset/bing.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bing.list"
+    interval: 86400
+    format: text
+  category-ai-not-cn:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-ai-not-cn.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.list"
+    interval: 86400
+    format: text
+  github:
+    type: http
+    behavior: domain
+    path: ./ruleset/github.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.list"
+    interval: 86400
+    format: text
+  category-speedtest:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-speedtest.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-speedtest.list"
+    interval: 86400
+    format: text
+  youtube:
+    type: http
+    behavior: domain
+    path: ./ruleset/youtube.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.list"
+    interval: 86400
+    format: text
+  apple-tvplus:
+    type: http
+    behavior: domain
+    path: ./ruleset/apple-tvplus.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple-tvplus.list"
+    interval: 86400
+    format: text
+  apple:
+    type: http
+    behavior: domain
+    path: ./ruleset/apple.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.list"
+    interval: 86400
+    format: text
+  microsoft:
+    type: http
+    behavior: domain
+    path: ./ruleset/microsoft.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.list"
+    interval: 86400
+    format: text
+  googlefcm:
+    type: http
+    behavior: domain
+    path: ./ruleset/googlefcm.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.list"
+    interval: 86400
+    format: text
+  google:
+    type: http
+    behavior: domain
+    path: ./ruleset/google.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.list"
+    interval: 86400
+    format: text
+  tiktok:
+    type: http
+    behavior: domain
+    path: ./ruleset/tiktok.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.list"
+    interval: 86400
+    format: text
+  netflix:
+    type: http
+    behavior: domain
+    path: ./ruleset/netflix.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.list"
+    interval: 86400
+    format: text
+  disney:
+    type: http
+    behavior: domain
+    path: ./ruleset/disney.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/disney.list"
+    interval: 86400
+    format: text
+  hbo:
+    type: http
+    behavior: domain
+    path: ./ruleset/hbo.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/hbo.list"
+    interval: 86400
+    format: text
+  primevideo:
+    type: http
+    behavior: domain
+    path: ./ruleset/primevideo.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/primevideo.list"
+    interval: 86400
+    format: text
+  category-emby:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-emby.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-emby.list"
+    interval: 86400
+    format: text
+  spotify:
+    type: http
+    behavior: domain
+    path: ./ruleset/spotify.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/spotify.list"
+    interval: 86400
+    format: text
+  bahamut:
+    type: http
+    behavior: domain
+    path: ./ruleset/bahamut.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bahamut.list"
+    interval: 86400
+    format: text
+  steam:
+    type: http
+    behavior: domain
+    path: ./ruleset/steam.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.list"
+    interval: 86400
+    format: text
+  category-games:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-games.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.list"
+    interval: 86400
+    format: text
+  category-entertainment:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-entertainment.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-entertainment.list"
+    interval: 86400
+    format: text
+  category-ecommerce:
+    type: http
+    behavior: domain
+    path: ./ruleset/category-ecommerce.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ecommerce.list"
+    interval: 86400
+    format: text
+  gfw:
+    type: http
+    behavior: domain
+    path: ./ruleset/gfw.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.list"
+    interval: 86400
+    format: text
+  connectivity-check:
+    type: http
+    behavior: domain
+    path: ./ruleset/connectivity-check.yaml
+    url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/connectivity-check.list"
     interval: 86400
     format: text
   always_proxy_ports:
@@ -782,42 +984,42 @@ rule-providers:
 rules:
   - RULE-SET,always_proxy_ports,🚀 手动选择
   - RULE-SET,direct_always,🎯 全球直连
-  - GEOSITE,private,🎯 全球直连
+  - RULE-SET,private,🎯 全球直连
   - GEOIP,private,🎯 全球直连,no-resolve
   - RULE-SET,custom_direct,🎯 全球直连
   - RULE-SET,custom_proxy,🚀 手动选择
-  - GEOSITE,cn,🎯 全球直连
+  - RULE-SET,cn,🎯 全球直连
   - GEOIP,cn,🎯 全球直连,no-resolve
   - RULE-SET,google-cn,🎯 全球直连
   - RULE-SET,category-games-cn,🎯 全球直连
   - RULE-SET,steam_cdn,🎯 全球直连
-  - GEOSITE,category-game-platforms-download,🎯 全球直连
-  - GEOSITE,category-public-tracker,🎯 全球直连
-  - GEOSITE,category-communication,💬 即时通讯
-  - GEOSITE,category-social-media-!cn,🌐 社交媒体
-  - GEOSITE,openai,🤖 ChatGPT
-  - GEOSITE,bing,🤖 Copilot
-  - GEOSITE,category-ai-!cn,🤖 AI服务
-  - GEOSITE,github,🚀 GitHub
-  - GEOSITE,category-speedtest,🚀 测速工具
-  - GEOSITE,youtube,📹 YouTube
-  - GEOSITE,apple-tvplus,🎥 AppleTV+
-  - GEOSITE,apple,🍎 苹果服务
-  - GEOSITE,microsoft,Ⓜ️ 微软服务
-  - GEOSITE,googlefcm,📢 谷歌FCM
-  - GEOSITE,google,🇬 谷歌服务
-  - GEOSITE,tiktok,🎶 TikTok
-  - GEOSITE,netflix,🎥 Netflix
-  - GEOSITE,disney,🎥 DisneyPlus
-  - GEOSITE,hbo,🎥 HBO
-  - GEOSITE,primevideo,🎥 PrimeVideo
-  - GEOSITE,category-emby,🎥 Emby
-  - GEOSITE,spotify,🎻 Spotify
-  - GEOSITE,bahamut,📺 Bahamut
-  - GEOSITE,steam,🎮 Steam
-  - GEOSITE,category-games,🎮 游戏平台
-  - GEOSITE,category-entertainment,🌎 国外媒体
-  - GEOSITE,category-ecommerce,🛒 国外电商
+  - RULE-SET,category-game-platforms-download,🎯 全球直连
+  - RULE-SET,category-public-tracker,🎯 全球直连
+  - RULE-SET,category-communication,💬 即时通讯
+  - RULE-SET,category-social-media-not-cn,🌐 社交媒体
+  - RULE-SET,openai,🤖 ChatGPT
+  - RULE-SET,bing,🤖 Copilot
+  - RULE-SET,category-ai-not-cn,🤖 AI服务
+  - RULE-SET,github,🚀 GitHub
+  - RULE-SET,category-speedtest,🚀 测速工具
+  - RULE-SET,youtube,📹 YouTube
+  - RULE-SET,apple-tvplus,🎥 AppleTV+
+  - RULE-SET,apple,🍎 苹果服务
+  - RULE-SET,microsoft,Ⓜ️ 微软服务
+  - RULE-SET,googlefcm,📢 谷歌FCM
+  - RULE-SET,google,🇬 谷歌服务
+  - RULE-SET,tiktok,🎶 TikTok
+  - RULE-SET,netflix,🎥 Netflix
+  - RULE-SET,disney,🎥 DisneyPlus
+  - RULE-SET,hbo,🎥 HBO
+  - RULE-SET,primevideo,🎥 PrimeVideo
+  - RULE-SET,category-emby,🎥 Emby
+  - RULE-SET,spotify,🎻 Spotify
+  - RULE-SET,bahamut,📺 Bahamut
+  - RULE-SET,steam,🎮 Steam
+  - RULE-SET,category-games,🎮 游戏平台
+  - RULE-SET,category-entertainment,🌎 国外媒体
+  - RULE-SET,category-ecommerce,🛒 国外电商
   - RULE-SET,gfw,🚀 手动选择
   - RULE-SET,hxmovie,🌸 红杏影视
   - GEOIP,telegram,💬 即时通讯,no-resolve

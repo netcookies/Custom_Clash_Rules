@@ -1,0 +1,78 @@
+port: 8080
+socks-port: 1080
+mixed-port: 7890
+redir-port: 7891
+tproxy-port: 7892
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: warning
+external-controller: 0.0.0.0:9090
+find-process-mode: off
+unified-delay: true
+tcp-concurrent: true
+keep-alive-idle: 600
+keep-alive-interval: 15
+external-ui: ui
+external-ui-url: https://cdn.gh-proxy.org/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+
+tun:
+  stack: mixed
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: false
+  mtu: 9000
+  gso: true
+  gso-max-size: 65536
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+
+dns:
+  listen: 0.0.0.0:1053
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    # rule-set: 需要 Stash iOS/tvOS 3.6+ / macOS 4.3+
+    - derp.nznd.org
+    - +.lan
+    - +.local
+    - 'rule-set:cn'
+    - 'rule-set:connectivity-check'
+    - 'rule-set:private'
+  fake-ip-filter-mode: blacklist
+  use-system-hosts: true
+  use-hosts: true
+  default-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://doh.360.cn/dns-query
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://doh.360.cn/dns-query
+
+sniffer:
+  enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+
+profile:
+  store-selected: true
+  store-fake-ip: true

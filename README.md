@@ -11,7 +11,7 @@
 
 GeoSite 和 GeoIP 数据库（Clash Meta / OpenClash）：请使用 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) 或 [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat) 的数据库。  
 
-Stash 的 `GEOSITE` 使用 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community) 的 `data/<name>`，不会读取 Clash Meta 的 `geox-url` / `geosite.dat`。因此 Stash 请使用单独的 `Custom_Stash_Full` 模板，不要直接复用 Clash 的 Full 模板。  
+Stash 的 `GEOSITE` 使用 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community) 的 `data/<name>`，不会读取 Clash Meta 的 `geox-url` / `geosite.dat`。因此 Stash 请使用单独的 `Custom_Stash_Full` 模板（该模板已全部改为 RULE-SET，不使用 GEOSITE），不要直接复用 Clash 的 Full 模板。  
 
 匆忙制作，没有太多精力维护，可能存在尚不完善，甚至严重报错。  
 上报问题会修复。  
@@ -35,9 +35,11 @@ Stash 的 `GEOSITE` 使用 [v2fly/domain-list-community](https://github.com/v2fl
   
 - Stash Full 模板（`Custom_Stash_Full`）  
 
-  Stash 专用全分组模板，由 Full 模板派生，上游 Full 有变更时需要手动同步。Stash 的 `GEOSITE` 数据源是 v2fly domain-list-community，不包含 `gfw`、`google-cn`、`category-games@cn` 等分类，因此这些规则改为 MetaCubeX 的单类 `rule-providers`（`behavior: domain` + `format: text`），再用 `RULE-SET` 引用。生成的 `yaml/Custom_Stash_Full.yaml` 可用于 Stash，也可作为 Sub-Store 的 Clash 配置模板；它是完整配置（含 `rule-providers` / `rules`），在 Sub-Store 中请按 `mihomoConfig` 完整配置模板使用，不要当纯节点订阅解析（普通 Clash 订阅解析只会提取 `proxies`，`rules` / `rule-providers` 会丢失）。  
+  Stash 专用全分组模板，由 Full 模板派生，上游 Full 有变更时需要手动同步。Stash 的 `GEOSITE` 数据源是 v2fly domain-list-community，分类和 Clash 的 `geosite.dat` 不一致，因此 Stash 版不使用任何 `GEOSITE`：所有域名分类都改为 MetaCubeX 的单类 `rule-providers`（`behavior: domain` + `format: text`），再用 `RULE-SET` 引用；DNS `fake-ip-filter` 也改用 `rule-set:`。`GEOIP` 规则保留，继续使用 Stash 可配置的 MaxMind 数据库。生成的 `yaml/Custom_Stash_Full.yaml` 可用于 Stash，也可作为 Sub-Store 的 Clash 配置模板；它是完整配置（含 `rule-providers` / `rules`），在 Sub-Store 中请按 `mihomoConfig` 完整配置模板使用，不要当纯节点订阅解析（普通 Clash 订阅解析只会提取 `proxies`，`rules` / `rule-providers` 会丢失）。  
 
   Stash 设置中的 GEOIP 数据库请填 MaxMind 格式的 `country-lite.mmdb`（例如 `https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country-lite.mmdb`），不要填 V2Ray 格式的 `geoip.dat`。  
+
+  `fake-ip-filter` 里的 `rule-set:` 需要 Stash iOS/tvOS 3.6+ / macOS 4.3+；更低版本请升级 Stash，或删除这三条 `rule-set:`（会退回 Fake-IP 默认行为）。  
 
   `cfg/Custom_Stash_Full.ini` 通过 `rule-provider=key,behavior,format,url,interval` 声明额外的规则集，生成脚本会输出对应的 `rule-providers`，并用 `ruleset=分组,[]RULE-SET,key` 引用。  
   
